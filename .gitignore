@@ -1,0 +1,26 @@
+/* VSCode settings */
+.vscode/ipch
+.vscode/settings.json
+
+/* Qt resources */
+build
+debug
+release
+plugins
+styles
+*.Debug
+*.Release
+.qmake.stash
+Makefile*
+
+/* Libraries */
+*.dll
+
+/* Executable files */
+*.out
+*.exe
+uni-correlation-coefficient
+
+/* User files */
+upload
+out

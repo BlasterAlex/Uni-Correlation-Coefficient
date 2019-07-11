@@ -1,0 +1,47 @@
+{
+  "name": "CreateTable",
+  "version": "1.0.0",
+  "manifest_version": 2,
+  "browser_action": {
+    "default_title": "CreateTable",
+    "default_icon": "data/images/icons/inactive-icon.png",
+    "default_popup": "src/html/popup.html"
+  },
+  "background": {
+    "scripts": [
+      "src/js/background.js"
+    ],
+    "persistent": false
+  },
+  "content_scripts": [
+    {
+      "exclude_globs": [],
+      "include_globs": [
+        "*"
+      ],
+      "js": [
+        "src/js/jquery-3.4.1.min.js",
+        "src/js/content.user.js"
+      ],
+      "matches": [
+        "https://www.timeshighereducation.com/world-university-rankings/2019*",
+        "https://cwur.org/2018-19.php",
+        "http://roundranking.com/ranking/world-university-rankings.html*",
+        "http://www.shanghairanking.com/ARWU*"
+      ],
+      "run_at": "document_end"
+    }
+  ],
+  "converted_from_user_script": true,
+  "description": "Собираю таблицы рейтингов с известных мне сайтов",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "tabs"
+  ],
+  "icons": {
+    "16": "data/images/icons/active-icon-16.png",
+    "48": "data/images/icons/active-icon-48.png",
+    "128": "data/images/icons/active-icon-128.png"
+  }
+}

@@ -1,0 +1,9 @@
+[Desktop Entry]
+Name=uni-correlation-coefficient
+Comment=
+Terminal=false
+Icon=/home/alex/Документы/Programm/uni-correlation-coefficient/data/images/icons/app-icon-48.ico
+# Replace the path to the icon in 5-th line with a new one and then execute the program
+Exec=bash -c 'sed -i "5 s,Icon=.*,Icon=$PWD/data/images/icons/app-icon-48.ico," ./uni-correlation-coefficient.desktop; ./uni-correlation-coefficient'
+Type=Application
+Name[ru_RU.utf8]=uni-correlation-coefficient

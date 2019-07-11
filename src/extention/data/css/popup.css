@@ -1,0 +1,125 @@
+@font-face {
+    font-family: "MontHeavy";
+    src: url("../fonts/MONT HEAVY DEMO.ttf");
+}
+
+html, body {
+  min-width: 320px;
+  height: 190px;
+  margin: 5px 5px 10px 5px;
+}
+
+body {
+  position: relative;
+}
+
+/* Лого */
+.popup-head {
+  display: flex;
+}
+
+.popup-head img {
+  max-width: 23px;
+  align-self: center; 
+  margin-right: 5px;
+}
+
+.popup-head h1 {
+  font-family: "MontHeavy";
+  color: #5f16a3;
+  font-size: 20px;
+  margin: auto 0;
+  padding-top: 4px;
+  line-height: 25px;
+}
+
+.popup-head span {
+  color: #8412a5;
+}
+
+/* Список */
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 10px 10px 0 10px;
+}
+
+li {
+  font: 200 16px/1.5 Helvetica, Verdana, sans-serif;
+  border-bottom: 1px solid #ccc;
+}
+
+li:last-child {
+  border: none;
+}
+
+li a {
+  text-decoration: none;
+  color: #5d2981;
+
+  -webkit-transition: font-size 0.19s ease;
+  -moz-transition: font-size 0.19s ease;
+  -o-transition: font-size 0.19s ease;
+  -ms-transition: font-size 0.19s ease;
+  transition: font-size 0.19s ease;
+  display: block;
+  /* width: 200px; */
+}
+
+li a:hover {
+  font-size: 23px;
+  color: #6815a3;
+}
+
+/* Поле ввода */
+.input-container {
+  margin: 10px 3%;
+  position: absolute;
+  display: flex;
+  width: 94%;
+  bottom: 0;
+}
+
+.input-container label{
+  font-size: 15px;
+  color: #5d2981;
+  padding-top: 3px;
+  margin-right: 3px;
+}
+
+.input {
+  width: 20px;
+  position: relative;
+}
+
+input[type="text"]{
+  font-size: 15px;
+  color: #333; 
+  width: 100%;
+  box-sizing: border-box; 
+  letter-spacing: 1px;
+  padding-top: 4px;
+  padding-left: 7px;
+}
+:focus{outline: none;}
+
+.effect {
+  border: 0; 
+  padding: 1px 0; 
+  border-bottom: 1px solid #ccc; 
+  background-color: transparent;
+} 
+.effect ~ .focus-border{
+  position: absolute; 
+  bottom: 0; 
+  left: 0; 
+  width: 0; 
+  height: 2px; 
+  background-color: #8412a5; 
+  transition: 0.4s;
+}
+.effect:focus ~ .focus-border,
+.has-content.effect ~ .focus-border{
+  width: 100%; 
+  transition: 0.4s;
+}
