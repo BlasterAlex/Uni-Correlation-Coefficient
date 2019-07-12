@@ -32,6 +32,9 @@
       "run_at": "document_end"
     }
   ],
+  "web_accessible_resources": [
+    "data/images/icons/download-icon.png"
+  ],
   "converted_from_user_script": true,
   "description": "Собираю таблицы рейтингов с известных мне сайтов",
   "permissions": [
