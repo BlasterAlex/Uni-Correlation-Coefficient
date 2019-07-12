@@ -1,6 +1,7 @@
 #ifndef UPLOAD_H
 #define UPLOAD_H
 
+#include <QCloseEvent>
 #include <QGroupBox>
 #include <QLabel>
 #include <QStringList>

@@ -15,14 +15,19 @@ class TableDialog : public QDialog {
   Q_OBJECT
 
 public:
-  explicit TableDialog(Table, QWidget *parent = 0);
+  explicit TableDialog(int, Table, QWidget *parent = 0);
   virtual ~TableDialog() {}
 
 protected:
   void closeEvent(QCloseEvent *); // закрытие окна
 
+private:
+  int num; // номер таблицы в массиве
+
 signals:
   void shutdown();
+
+  friend class Coefficients;
 };
 
 #endif // TABLEDIALOG_H

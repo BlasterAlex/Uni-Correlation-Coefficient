@@ -10,7 +10,7 @@
 
 #include "TableDialog.hpp"
 
-TableDialog::TableDialog(Table t, QWidget *parent) : QDialog(parent) {
+TableDialog::TableDialog(int n, Table t, QWidget *parent) : num(n), QDialog(parent) {
 
   setMinimumWidth(400);
   setStyleSheet("QHeaderView::section {"

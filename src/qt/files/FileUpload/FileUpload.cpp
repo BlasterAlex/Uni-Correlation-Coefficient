@@ -1,3 +1,4 @@
+#include <QCloseEvent>
 #include <QDebug>
 #include <QDir>
 #include <QDragEnterEvent>

@@ -4,7 +4,7 @@
 #define MyAppName "Uni Correlation Coefficient"
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Alexander Pishulev"
-#define MyAppURL "none"
+#define MyAppURL "https://github.com/BlasterAlex/Uni-Correlation-Coefficient"
 #define MyAppExeName "UniCorrelationCoefficient.exe"
 
 [Setup]

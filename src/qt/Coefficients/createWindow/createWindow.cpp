@@ -13,6 +13,7 @@
 #include <QHeaderView>
 #include <QLayout>
 #include <QList>
+#include <QMessageBox>
 #include <QMultiMap>
 #include <QObject>
 #include <QProgressBar>
@@ -32,6 +33,7 @@
 #include "../Coefficients.hpp"
 
 #define sendAction qobject_cast<QToolButton *>
+#define sendTableDialog qobject_cast<TableDialog *>
 
 // Создание полоски загрузки
 void Coefficients::createLoader() {
@@ -248,8 +250,17 @@ void Coefficients::cellSelected(int nRow, int nCol) {
 
 // Нажатие на заголовок таблицы
 void Coefficients::headerSelected(int num) {
-  tableDialog = new TableDialog(tables[num], this);
-  tableDialog->show();
-  // dialog = true;
-  // connect(tableDialog, SIGNAL(shutdown()), this, SLOT(noDialog()));
+  if (openedTables.indexOf(num) == -1) { // открыть диалоговое окно таблицы, если она еще не открыта
+    tableDialog = new TableDialog(num, tables[num], this);
+    tableDialog->show();
+
+    connect(tableDialog, SIGNAL(shutdown()), this, SLOT(minusDialog()));
+    openedTables.push_back(num);
+  }
+}
+
+// Закрытие диалогового окна таблицы
+void Coefficients::minusDialog() {
+  int num = sendTableDialog(sender())->num;
+  openedTables.remove(openedTables.indexOf(num)); // удалить окно из списка открытых
 }

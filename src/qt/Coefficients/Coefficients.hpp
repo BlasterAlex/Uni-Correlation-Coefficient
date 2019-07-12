@@ -43,11 +43,10 @@ private slots:
   void action();               // нажатие кнопки меню
   void cellSelected(int, int); // нажатие на ячейку таблицы
   void headerSelected(int);    // нажатие на заголовок таблицы
-
-signals:
-  void shutdown();
+  void minusDialog();          // закрытие диалогового окна таблицы
 
 private:
+  // Таблицы рейтингов
   QVector<Table> tables;
   int tablesNum;
 
@@ -70,6 +69,7 @@ private:
 
   // Диалоговое окно таблицы
   TableDialog *tableDialog;
+  QVector<int> openedTables;
 
   // Диалоговое окно графика
   Chart *graph;
@@ -86,6 +86,9 @@ private:
   void writeToCSV(QVector<Coeff>, QString); // вывод результатов в файл
   void displayResults();                    // отображение результатов
   void newDataTable(QVector<Coeff>);        // записать новую информацию в таблицу
+
+signals:
+  void shutdown();
 };
 
 #endif // COEFF_H
