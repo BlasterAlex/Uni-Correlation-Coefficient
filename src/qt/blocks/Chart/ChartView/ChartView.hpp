@@ -18,7 +18,7 @@ class ChartView : public QChartView {
   Q_OBJECT
 
 public:
-  explicit ChartView(QWidget *parent = 0);
+  explicit ChartView(QVector<Table> &, QWidget *parent = 0);
   virtual ~ChartView() {}
 };
 

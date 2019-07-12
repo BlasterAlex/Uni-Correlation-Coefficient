@@ -12,14 +12,15 @@
 #include <QWidget>
 
 FileBlock::FileBlock(QString _text, QWidget *parent) : QGroupBox(parent) {
+
+  setStyleSheet("QGroupBox { padding: 20px 5px 0 5px; margin-top: -15px }");
   QHBoxLayout *vbox = new QHBoxLayout(this);
 
   text = _text;
   QLabel *textLabel = new QLabel(this);
   textLabel->setText(text);
   vbox->addWidget(textLabel);
-
-  vbox->addItem(new QSpacerItem(20, 0));
+  vbox->addStretch();
 
   QPixmap pixmap("data/images/red-cross.png");
   pixmap = pixmap.scaled(15, 15, Qt::KeepAspectRatio);

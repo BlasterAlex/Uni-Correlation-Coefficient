@@ -10,9 +10,11 @@
 
 #include "TableDialog.hpp"
 
-TableDialog::TableDialog(int n, Table t, QWidget *parent) : num(n), QDialog(parent) {
+TableDialog::TableDialog(int n, Table t, QWidget *parent) : QDialog(parent) {
+  num = n;
 
-  setMinimumWidth(400);
+  setMinimumWidth(550);
+  setMinimumHeight(450);
   setStyleSheet("QHeaderView::section {"
                 "  background-color: #bdbdbd;"
                 "  padding: 4px;"
@@ -30,7 +32,7 @@ TableDialog::TableDialog(int n, Table t, QWidget *parent) : num(n), QDialog(pare
                 "  border-left: 1px solid #fffff8;"
                 "}"
                 "QLabel {"
-                "  margin: 5px 0;"
+                "  margin: 0 0 5px 0;"
                 "}");
 
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
@@ -45,9 +47,11 @@ TableDialog::TableDialog(int n, Table t, QWidget *parent) : num(n), QDialog(pare
   QLabel *textLabel = new QLabel(this);
   textLabel->setText(t.name.split(".")[0]);
   QFont font = textLabel->font();
-  font.setPointSize(15);
+
+  font.setPointSize(14);
   font.setBold(true);
   textLabel->setFont(font);
+  textLabel->setAlignment(Qt::AlignTop | Qt::AlignCenter);
 
   mainLayout->addWidget(textLabel);
 

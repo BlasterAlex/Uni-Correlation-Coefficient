@@ -1,4 +1,6 @@
 #include <QCloseEvent>
+#include <QCollator>
+#include <QDebug>
 #include <QDialog>
 #include <QLabel>
 #include <QScatterSeries>
@@ -6,19 +8,21 @@
 #include <QTableWidget>
 #include <QVector>
 #include <QWidget>
+#include <QtAlgorithms>
 #include <QtCharts>
 
 #include "../../Table/Table.hpp"
 #include "Chart.hpp"
 #include "ChartView/ChartView.hpp"
 
-Chart::Chart(QWidget *parent) : QDialog(parent) {
+Chart::Chart(QString n, QVector<Table> tables, QWidget *parent) : QDialog(parent) {
+  cord = n;
 
-  setMinimumHeight(500);
+  setMinimumHeight(700);
   setMinimumWidth(700);
 
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  mainLayout->addWidget(new ChartView(this));
+  mainLayout->addWidget(new ChartView(tables, this));
 }
 
 // Событие закрытия окна

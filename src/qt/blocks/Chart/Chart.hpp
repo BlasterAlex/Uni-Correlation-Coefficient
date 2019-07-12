@@ -15,14 +15,19 @@ class Chart : public QDialog {
   Q_OBJECT
 
 public:
-  explicit Chart(QWidget *parent = 0);
+  explicit Chart(QString, QVector<Table>, QWidget *parent = 0);
   virtual ~Chart() {}
 
 protected:
   void closeEvent(QCloseEvent *); // закрытие окна
 
+private:
+  QString cord; // номера таблиц в списке
+
 signals:
   void shutdown();
+
+  friend class Coefficients;
 };
 
 #endif // CHART_H

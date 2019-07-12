@@ -61,14 +61,15 @@ void FileUpload::createFileList() {
   fileListBlock = new QGroupBox(tr("Загруженные файлы"), this);
   fileListBlock->setMinimumWidth(300);
 
-  QFormLayout *vbox = new QFormLayout(fileListBlock);
-
   QString dirName = getSetting("uploads/dir").toString();
   QDir dir(dirName);
   if (!dir.exists()) {
     QDir().mkdir(dirName);
     qDebug() << "Создана папка " + dirName;
   }
+
+  QFormLayout *vbox = new QFormLayout(fileListBlock);
+  vbox->setContentsMargins(5, 5, 5, 5);
 
   foreach (QString file, dir.entryList(QDir::Files)) {
     QFileInfo fileInfo(file);

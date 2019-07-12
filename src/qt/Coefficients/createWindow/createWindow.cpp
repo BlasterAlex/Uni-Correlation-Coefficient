@@ -10,6 +10,7 @@
 #include <QFont>
 #include <QFormLayout>
 #include <QGroupBox>
+#include <QHBoxLayout>
 #include <QHeaderView>
 #include <QLayout>
 #include <QList>
@@ -34,6 +35,7 @@
 
 #define sendAction qobject_cast<QToolButton *>
 #define sendTableDialog qobject_cast<TableDialog *>
+#define sendGraphDialog qobject_cast<Chart *>
 
 // Создание полоски загрузки
 void Coefficients::createLoader() {
@@ -135,9 +137,12 @@ void Coefficients::createContentBlock() {
                               "}");
 
   // Слой
-  QFormLayout *vbox = new QFormLayout(contentBlock);
+  QVBoxLayout *vbox = new QVBoxLayout(contentBlock);
   vbox->setMargin(0);
   vbox->setContentsMargins(5, 5, 10, 5);
+
+  // Верхний слой
+  QHBoxLayout *header = new QHBoxLayout;
 
   // Заголовок
   QLabel *textLabel = new QLabel(contentBlock);
@@ -146,8 +151,31 @@ void Coefficients::createContentBlock() {
   font.setPointSize(10);
   font.setBold(true);
   textLabel->setFont(font);
+  textLabel->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
-  vbox->addWidget(textLabel);
+  header->addWidget(textLabel);
+  header->addStretch();
+
+  // Количество университетов
+  QLabel *uniLabel = new QLabel(contentBlock);
+  uniLabel->setText("Университетов:");
+  font = uniLabel->font();
+  font.setPointSize(9);
+  uniLabel->setFont(font);
+  uniLabel->setAlignment(Qt::AlignTop | Qt::AlignRight);
+
+  header->addWidget(uniLabel);
+
+  QLabel *uniCount = new QLabel(contentBlock);
+  uniCount->setText(QString::number(tables[0].getSize()));
+  font = uniCount->font();
+  font.setPointSize(9);
+  font.setBold(true);
+  uniCount->setFont(font);
+  uniCount->setAlignment(Qt::AlignTop | Qt::AlignRight);
+
+  header->addWidget(uniCount);
+  vbox->addLayout(header);
 
   // Таблица
   table = new QTableWidget(contentBlock);
@@ -239,15 +267,6 @@ void Coefficients::action() {
   }
 }
 
-// Нажатие на ячейку таблицы
-void Coefficients::cellSelected(int nRow, int nCol) {
-  if (nRow != nCol) {
-    qDebug() << "Row: " << QString::number(nRow) << " Col: " << QString::number(nCol);
-    graph = new Chart(this);
-    graph->show();
-  }
-}
-
 // Нажатие на заголовок таблицы
 void Coefficients::headerSelected(int num) {
   if (openedTables.indexOf(num) == -1) { // открыть диалоговое окно таблицы, если она еще не открыта
@@ -258,9 +277,42 @@ void Coefficients::headerSelected(int num) {
     openedTables.push_back(num);
   }
 }
-
 // Закрытие диалогового окна таблицы
 void Coefficients::minusDialog() {
   int num = sendTableDialog(sender())->num;
   openedTables.remove(openedTables.indexOf(num)); // удалить окно из списка открытых
+}
+
+// Нажатие на ячейку таблицы
+void Coefficients::cellSelected(int nRow, int nCol) {
+  if (nRow != nCol) {
+    // Для проверки на дублирование окна
+    QString cord = QString::number(nRow) + QString::number(nCol);
+    QString rCord;
+    for (int i = cord.size() - 1; i >= 0; --i)
+      rCord += cord[i];
+
+    // Если такое окно не открыто
+    if (openedGraphs.indexOf(cord) == -1 && openedGraphs.indexOf(rCord) == -1) {
+      graph = new Chart(cord, QVector<Table>({tables[nCol], tables[nRow]}), this);
+      graph->show();
+
+      connect(graph, SIGNAL(shutdown()), this, SLOT(minusGraph()));
+      openedGraphs.push_back(cord);
+    }
+  }
+}
+// Закрытие диалогового графика
+void Coefficients::minusGraph() {
+  QString cord = sendGraphDialog(sender())->cord;
+  QString rCord;
+  for (int i = cord.size() - 1; i >= 0; --i)
+    rCord += cord[i];
+
+  // Поиск координаты в массиве
+  int index = openedGraphs.indexOf(cord);
+  if (index == -1)
+    index = openedGraphs.indexOf(rCord);
+
+  openedGraphs.remove(index); // удалить окно из списка открытых
 }

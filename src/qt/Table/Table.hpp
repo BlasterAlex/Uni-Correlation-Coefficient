@@ -20,6 +20,7 @@ public:
 
   friend class Coefficients;
   friend class TableDialog;
+  friend class ChartView;
 };
 
 #endif // TABLE_H

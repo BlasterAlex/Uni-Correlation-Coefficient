@@ -44,6 +44,7 @@ private slots:
   void cellSelected(int, int); // нажатие на ячейку таблицы
   void headerSelected(int);    // нажатие на заголовок таблицы
   void minusDialog();          // закрытие диалогового окна таблицы
+  void minusGraph();           // закрытие диалогового графика
 
 private:
   // Таблицы рейтингов
@@ -73,6 +74,7 @@ private:
 
   // Диалоговое окно графика
   Chart *graph;
+  QVector<QString> openedGraphs;
 
   void setMenu();            // создание меню
   void createContentBlock(); // создание поля для вывода результатов
