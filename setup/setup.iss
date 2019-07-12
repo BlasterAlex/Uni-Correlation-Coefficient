@@ -5,7 +5,7 @@
 #define MyAppVersion "1.0.0"
 #define MyAppPublisher "Alexander Pishulev"
 #define MyAppURL "https://github.com/BlasterAlex/Uni-Correlation-Coefficient"
-#define MyAppExeName "UniCorrelationCoefficient.exe"
+#define MyAppExeName "uni-correlation-coefficient.exe"
 
 [Setup]
 ; NOTE: The value of AppId uniquely identifies this application. Do not use the same AppId value in installers for other applications.
@@ -47,7 +47,6 @@ Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\uni-correlation-
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\config\*"; DestDir: "{app}\config"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\data\images\*"; DestDir: "{app}\data\images"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\data\images\icons\*"; DestDir: "{app}\data\images\icons"; Flags: ignoreversion
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\config\*"; DestDir: "{app}\config"; Flags: ignoreversion
 
 ; Extension for Chrome
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\src\extention\*"; DestDir: "{app}\extention"; Flags: ignoreversion

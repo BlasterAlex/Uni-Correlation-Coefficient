@@ -18,7 +18,7 @@ Makefile*
 
 /* Executable files */
 *.out
-*.exe
+/*.exe
 uni-correlation-coefficient
 
 /* User files */

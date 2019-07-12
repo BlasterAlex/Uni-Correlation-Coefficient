@@ -33,6 +33,7 @@ FileUpload::FileUpload(QWidget *parent) : QWidget(parent) {
   // Основной слой
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
   mainLayout->setAlignment(Qt::AlignHCenter);
+  setMinimumWidth(455);
 
   // Создание поля загрузки файлов
   createDragAndDrop();
@@ -59,7 +60,7 @@ void FileUpload::createDragAndDrop() { // создание поля загруз
 // Вывод списка загруженных файлов
 void FileUpload::createFileList() {
   fileListBlock = new QGroupBox(tr("Загруженные файлы"), this);
-  fileListBlock->setMinimumWidth(300);
+  fileListBlock->setMinimumWidth(430);
 
   QString dirName = getSetting("uploads/dir").toString();
   QDir dir(dirName);
@@ -69,7 +70,7 @@ void FileUpload::createFileList() {
   }
 
   QFormLayout *vbox = new QFormLayout(fileListBlock);
-  vbox->setContentsMargins(5, 5, 5, 5);
+  vbox->setContentsMargins(5, 5, 10, 5);
 
   foreach (QString file, dir.entryList(QDir::Files)) {
     QFileInfo fileInfo(file);
@@ -84,8 +85,10 @@ void FileUpload::createFileList() {
 
   if (!fileList.size())
     fileListBlock->hide(); // если нет файлов
-  else
+  else {
     checkExtensions(); // проверка, если есть файлы
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+  }
 }
 
 // Проверка файлов на тип
@@ -136,8 +139,10 @@ void FileUpload::formSubmited() {
         qDebug() << "Файл " << filename << " не загружен!";
     }
 
-  if (fileList.size())
+  if (fileList.size()) {
     fileListBlock->show();
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+  }
 }
 
 // Добавление нового файла
@@ -170,6 +175,8 @@ void FileUpload::removeFile() {
 
   if (!fileList.size())
     fileListBlock->hide();
+  else
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
 };
 
 // Удаление файла по имени
@@ -190,6 +197,8 @@ void FileUpload::removeFile(QString fileName) {
 
     if (!fileList.size())
       fileListBlock->hide();
+    else
+      fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
   }
 }
 

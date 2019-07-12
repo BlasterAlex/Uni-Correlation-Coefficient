@@ -13,7 +13,6 @@
 
 FileBlock::FileBlock(QString _text, QWidget *parent) : QGroupBox(parent) {
 
-  setStyleSheet("QGroupBox { padding: 20px 5px 0 5px; margin-top: -15px }");
   QHBoxLayout *vbox = new QHBoxLayout(this);
 
   text = _text;
@@ -30,5 +29,5 @@ FileBlock::FileBlock(QString _text, QWidget *parent) : QGroupBox(parent) {
   connect(button, SIGNAL(clicked()), this, SIGNAL(remove()));
 
   setFixedHeight(50);
-  vbox->setContentsMargins(0, 0, 0, 0);
+  vbox->setContentsMargins(5, 5, 5, 5);
 }
