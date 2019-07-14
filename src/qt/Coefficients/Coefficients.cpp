@@ -12,7 +12,6 @@
 #include <QObject>
 #include <QProgressBar>
 #include <QString>
-#include <QTextCodec>
 #include <QTextStream>
 #include <QToolBar>
 #include <QToolButton>
@@ -109,7 +108,7 @@ void Coefficients::writeToCSV(QVector<Coeff> coeffs, QString name) {
     qDebug() << "Создана папка " + path;
   }
   path = getSetting("output/coeff").toString();
-  dir = path;
+  dir.setPath(path);
   if (!dir.exists()) {
     QDir().mkdir(path);
     qDebug() << "Создана папка " + path;
@@ -122,7 +121,7 @@ void Coefficients::writeToCSV(QVector<Coeff> coeffs, QString name) {
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     QTextStream stream(&file);
 
-    stream << "x" << separator << "y" << separator << russian("Коэф.") << endl;
+    stream << "x" << separator << "y" << separator << tr("Коэф.") << endl;
 
     foreach (Coeff coeff, coeffs)
       stream << coeff.parents[0] << separator << coeff.parents[1] << separator << coeff.val << endl;
@@ -143,13 +142,4 @@ int Coefficients::iterationsCol(int N) {
     return 0;
   else
     return N + iterationsCol(N - 1);
-}
-
-// Вывод русского языка
-QString Coefficients::russian(QString word) {
-#if defined(_WIN32) || defined(_WIN64)
-  return QTextCodec::codecForName("CP1251")->toUnicode(word);
-#else
-  return tr(word.toStdString().c_str());
-#endif
 }

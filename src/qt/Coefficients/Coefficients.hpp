@@ -80,7 +80,6 @@ private:
   void createContentBlock(); // создание поля для вывода результатов
   void createLoader();       // создание полоски загрузки
 
-  QString russian(QString);                 // вывод русского языка
   int iterationsCol(int);                   // подсчет количества итераций алгоритмов
   void calculation();                       // вычисление коэффициентов
   float getSpearmanCoeff(int, int);         // вычисление коэффициентов Спирмана
