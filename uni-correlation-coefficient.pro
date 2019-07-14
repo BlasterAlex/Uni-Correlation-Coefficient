@@ -19,6 +19,7 @@ HEADERS += \ # Work with setting file
            src/qt/blocks/UploadForm/UploadForm.hpp \
            src/qt/blocks/FileBlock/FileBlock.hpp \
            src/qt/blocks/TableDialog/TableDialog.hpp \
+           src/qt/blocks/TableDialog/FloatItem/FloatItem.hpp \
            \
            \ # Correlation graph
            src/qt/blocks/Chart/Chart.hpp \

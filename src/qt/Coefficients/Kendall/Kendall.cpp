@@ -37,6 +37,7 @@ float Coefficients::getKendallCoeff(int firstI, int secondI) {
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     QTextStream stream(&file);
 
+    // Сортировка последовательностей по первому значению
     for (int i = 0; i < n; i++) {
       float a = first.data[i][0].toFloat();
       float b = second.data[i][0].toFloat();

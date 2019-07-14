@@ -20,17 +20,8 @@ ChartView::ChartView(QVector<Table> &tables, QWidget *parent) : QChartView(new Q
 
   // Определение масштаба графика
   int tableSize = tables[0].getSize();
-  float maxRank = std::max(tables[0].data[tableSize - 1][0].toFloat(), tables[1].data[tableSize - 1][0].toFloat());
+  float maxRank = std::max(tables[0].maxRank, tables[1].maxRank);
   int range = ceil(maxRank * 1.05);
-
-  // Сортировка таблиц по названиям университетов
-  QCollator collator;
-  collator.setNumericMode(true);
-
-  std::sort(tables[0].data.begin(), tables[0].data.end(),
-            [&collator](const QVector<QString> &a, const QVector<QString> &b) { return collator.compare(a[1], b[1]) < 0; });
-  std::sort(tables[1].data.begin(), tables[1].data.end(),
-            [&collator](const QVector<QString> &a, const QVector<QString> &b) { return collator.compare(a[1], b[1]) < 0; });
 
   // Точки на плоскости
   QScatterSeries *series1 = new QScatterSeries();

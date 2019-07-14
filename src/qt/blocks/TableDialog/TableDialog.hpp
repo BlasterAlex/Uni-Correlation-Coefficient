@@ -22,7 +22,9 @@ protected:
   void closeEvent(QCloseEvent *); // закрытие окна
 
 private:
-  int num; // номер таблицы в массиве
+  int num;             // номер таблицы в массиве
+  Table rankingTable;  // таблица рейтингов
+  QTableWidget *table; // виджет таблицы
 
 signals:
   void shutdown();

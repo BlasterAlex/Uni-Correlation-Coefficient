@@ -1,6 +1,7 @@
 #include "Table.hpp"
 #include "../settings/settings.hpp"
 
+#include <QCollator>
 #include <QDebug>
 #include <QDir>
 #include <QFile>
@@ -27,6 +28,7 @@ Table::Table(QString filename) : name(filename) {
     QVector<QVector<QString>> table;
 
     // Чтение файла до конца
+    int index = 0;
     while (!in.atEnd()) {
       QString line = in.readLine();
       QVector<QString> tableLine;
@@ -34,12 +36,17 @@ Table::Table(QString filename) : name(filename) {
       for (QString item : line.split(separator)) {
         tableLine.push_back(item);
       }
+      tableLine.push_back(QString::number(++index));
+
       table.push_back(tableLine);
     }
     file.close();
 
-    // сохранение новой таблицы
+    // Сохранение новой таблицы
     data = table;
+
+    // Сохранение максимального значения ранга
+    maxRank = data[data.size() - 1][0].toFloat();
   }
 }
 
@@ -63,7 +70,7 @@ void Table::writeToCSV() {
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     QTextStream stream(&file);
     foreach (QVector<QString> tableLine, data)
-      stream << tableLine[0] << separator << tableLine[1] << endl;
+      stream << tableLine[0] << separator << tableLine[1] << separator << tableLine[2] << endl;
     file.close();
   }
 }
@@ -114,6 +121,21 @@ void Table::analysisWith(Table &another) {
       prevRank = rank; // запомнить текущий ранг
     }
   }
+
+  // Обновление индексов
+  for (int i = 0; i < data.size(); ++i)
+    data[i][2] = QString::number(i + 1);
+
+  // Обновление максимального значения ранга
+  maxRank = data[data.size() - 1][0].toFloat();
+}
+
+// Сортировка таблицы по названиям
+void Table::sortByName() {
+  QCollator collator;
+  collator.setNumericMode(true);
+
+  std::sort(data.begin(), data.end(), [&collator](const QVector<QString> &a, const QVector<QString> &b) { return collator.compare(a[1], b[1]) < 0; });
 }
 
 // Получение размера таблицы

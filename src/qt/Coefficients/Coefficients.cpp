@@ -32,7 +32,6 @@ Coefficients::Coefficients(QVector<Table> t, QWidget *parent) : QDialog(parent) 
 
   // Основной слой
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
-  // mainLayout->setAlignment(Qt::AlignHCenter);
   mainLayout->setMargin(0);
   mainLayout->setContentsMargins(0, 0, 0, 0);
   mainLayout->setSpacing(0);
@@ -62,8 +61,7 @@ void Coefficients::calculation() {
   for (int i = 0; i < tablesNum - 1; ++i)
     for (int j = i + 1; j < tablesNum; ++j) {
       float coeff = getSpearmanCoeff(i, j);
-      // Функция возвращает значение очень близкое к единице,
-      // иначе будут возвращаться просто 1
+
       Spearman.push_back(Coeff(i, j, QString::number(1 - coeff) + QString(" (1 - ") + QString::number(coeff) + QString(")")));
 
       progress_bar->setValue(progress_bar->value() + 1);

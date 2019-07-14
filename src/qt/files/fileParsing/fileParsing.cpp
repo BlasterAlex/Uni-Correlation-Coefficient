@@ -27,16 +27,20 @@ QVector<Table> getParsedTables(QVector<QString> files) {
 void parsingFiles(QVector<Table> &tables) {
 
   // Сравнение всех таблиц с первой
-  for (int i = 1; i < tables.size(); ++i) {
+  for (int i = 1; i < tables.size(); ++i)
     tables[0].analysisWith(tables[i]);
-  }
 
-  // Теперь первая таблица содержит только записи, которые содержатся во всех остальных таблицах
+  /*** Теперь первая таблица содержит только записи,
+   * которые содержатся во всех остальных таблицах
+   */
 
   // Сравнение первой таблицы со всеми
-  for (int i = 1; i < tables.size(); ++i) {
+  for (int i = 1; i < tables.size(); ++i)
     tables[i].analysisWith(tables[0]);
-  }
+
+  // Сортировка таблиц по названиям университетов
+  for (int i = 0; i < tables.size(); ++i)
+    tables[i].sortByName();
 
   // Запись новых таблиц
   writingFiles(tables);

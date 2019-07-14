@@ -1,13 +1,18 @@
 #include <QCloseEvent>
 #include <QDialog>
 #include <QHeaderView>
+#include <QIcon>
 #include <QLabel>
 #include <QString>
 #include <QTableWidget>
+#include <QTableWidgetItem>
 #include <QVBoxLayout>
+#include <QVariant>
 #include <QVector>
 #include <QWidget>
 
+#include "../../Table/Table.hpp"
+#include "FloatItem/FloatItem.hpp"
 #include "TableDialog.hpp"
 
 TableDialog::TableDialog(int n, Table t, QWidget *parent) : QDialog(parent) {
@@ -27,10 +32,29 @@ TableDialog::TableDialog(int n, Table t, QWidget *parent) : QDialog(parent) {
                 "QHeaderView::section:horizontal {"
                 "  border-top: 1px solid #fffff8;"
                 "}"
-                ""
-                "QHeaderView::section:vertical {"
-                "  border-left: 1px solid #fffff8;"
+                "QHeaderView::section:horizontal:hover {"
+                "  background-color: #a8a8a8;"
+                "  text-decoration: underline;"
+                "  font-weight: bold;"
                 "}"
+                ""
+                "QHeaderView::down-arrow {"
+                "  image: url(data/images/sort-down-solid.svg);"
+                "  width: 12px;"
+                "  margin: 0 10px 0 0;"
+                "}"
+                ""
+                "QHeaderView::up-arrow {"
+                "  image: url(data/images/sort-up-solid.svg);"
+                "  width: 12px;"
+                "  margin: 0 10px 0 0;"
+                "}"
+                ""
+                "QHeaderView::up-arrow,"
+                "QHeaderView::down-arrow:hover {"
+                "  width: 13px;"
+                "}"
+                ""
                 "QLabel {"
                 "  margin: 0 0 5px 0;"
                 "}");
@@ -56,28 +80,30 @@ TableDialog::TableDialog(int n, Table t, QWidget *parent) : QDialog(parent) {
   mainLayout->addWidget(textLabel);
 
   // Таблица
-  QTableWidget *table = new QTableWidget(this);
+  table = new QTableWidget(this);
 
   // Запрет редактирования таблицы
   table->setEditTriggers(QAbstractItemView::NoEditTriggers);
-
   // Отключение фокуса на таблице
   table->setFocusPolicy(Qt::NoFocus);
   table->setSelectionMode(QAbstractItemView::NoSelection);
+  // Включение сортировки столбцов
+  table->setSortingEnabled(true);
+  table->horizontalHeader()->setSortIndicatorShown(true);
 
   // Размеры
   table->horizontalHeader()->setStretchLastSection(true);
   table->verticalHeader()->hide();
 
+  // Шапка таблицы
   table->setRowCount(t.getSize());
   table->setColumnCount(2);
   table->setHorizontalHeaderLabels(QStringList() << "rank"
                                                  << "name");
+  // Данные
   int count = 0;
   foreach (QVector<QString> rows, t.data) {
-    QTableWidgetItem *first = new QTableWidgetItem(rows[0]);
-    first->setTextAlignment(Qt::AlignCenter);
-    table->setItem(count, 0, first);
+    table->setItem(count, 0, new FloatItem(rows[0]));
     table->setItem(count++, 1, new QTableWidgetItem(rows[1]));
   }
 
