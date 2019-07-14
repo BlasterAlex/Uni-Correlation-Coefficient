@@ -12,6 +12,7 @@
 #include <QObject>
 #include <QProgressBar>
 #include <QString>
+#include <QTextCodec>
 #include <QTextStream>
 #include <QToolBar>
 #include <QToolButton>
@@ -60,9 +61,9 @@ void Coefficients::calculation() {
 
   for (int i = 0; i < tablesNum - 1; ++i)
     for (int j = i + 1; j < tablesNum; ++j) {
-      float coeff = getSpearmanCoeff(i, j);
 
-      Spearman.push_back(Coeff(i, j, QString::number(1 - coeff) + QString(" (1 - ") + QString::number(coeff) + QString(")")));
+      float coeff = getSpearmanCoeff(i, j);
+      Spearman.push_back(Coeff(i, j, QString::number(coeff)));
 
       progress_bar->setValue(progress_bar->value() + 1);
     }
@@ -120,7 +121,8 @@ void Coefficients::writeToCSV(QVector<Coeff> coeffs, QString name) {
   QFile file(path + name + ".csv");
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     QTextStream stream(&file);
-    stream << "x" << separator << "y" << separator << tr("Коэф.") << endl;
+
+    stream << "x" << separator << "y" << separator << russian("Коэф.") << endl;
 
     foreach (Coeff coeff, coeffs)
       stream << coeff.parents[0] << separator << coeff.parents[1] << separator << coeff.val << endl;
@@ -141,4 +143,13 @@ int Coefficients::iterationsCol(int N) {
     return 0;
   else
     return N + iterationsCol(N - 1);
+}
+
+// Вывод русского языка
+QString Coefficients::russian(QString word) {
+#if defined(_WIN32) || defined(_WIN64)
+  return QTextCodec::codecForName("CP1251")->toUnicode(word);
+#else
+  return tr(word.toStdString().c_str());
+#endif
 }

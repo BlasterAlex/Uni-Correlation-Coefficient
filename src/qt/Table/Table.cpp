@@ -6,10 +6,29 @@
 #include <QDir>
 #include <QFile>
 #include <QString>
+#include <QTextCodec>
 #include <QTextStream>
 #include <QVector>
 
 #define Iterator QMutableVectorIterator<QVector<QString>>
+
+// Среднее значение диапазона последовательности элементов
+float rangeAverage(int first, int last) {
+  float sum = 0;
+  float count = 0;
+
+  // Нужны номера, а не индексы
+  ++first;
+  ++last;
+
+  while (first < last) {
+    sum += first;
+    ++first;
+    ++count;
+  }
+
+  return sum / count;
+}
 
 // Чтение таблицы из файла
 Table::Table(QString filename) : name(filename) {
@@ -28,15 +47,12 @@ Table::Table(QString filename) : name(filename) {
     QVector<QVector<QString>> table;
 
     // Чтение файла до конца
-    int index = 0;
     while (!in.atEnd()) {
       QString line = in.readLine();
       QVector<QString> tableLine;
 
-      for (QString item : line.split(separator)) {
+      for (QString item : line.split(separator))
         tableLine.push_back(item);
-      }
-      tableLine.push_back(QString::number(++index));
 
       table.push_back(tableLine);
     }
@@ -70,7 +86,7 @@ void Table::writeToCSV() {
   if (file.open(QFile::WriteOnly | QFile::Truncate)) {
     QTextStream stream(&file);
     foreach (QVector<QString> tableLine, data)
-      stream << tableLine[0] << separator << tableLine[1] << separator << tableLine[2] << endl;
+      stream << tableLine[0] << separator << tableLine[1] << endl;
     file.close();
   }
 }
@@ -78,53 +94,59 @@ void Table::writeToCSV() {
 // Сравнение с другой таблицей
 void Table::analysisWith(Table &another) {
 
-  float change = 0;       // величина сдвига в процессе удаления записей
-  float prevRank = -1;    // предыдущий ранг
-  float prevRemRank = -1; // предыдущий удаленный ранг
-  float lastModified = 0; // величина последнего изменения
-
   /*** Алгоритм:
-   * производится проход по таблице с поиском текущего названия в другой таблице
-   * при нахождении несовпадения, запись из первой таблицы удаляется
-   * если нет других записей с таким же рангом, removed увеличивается на 1
+   * Производится проход по таблице с поиском текущего названия в другой таблице.
+   * При нахождении несовпадения, запись из первой таблицы удаляется.
+   * Последовательность одинаковых рангов заменяется средним арифметическим
+   * номеров соответсвующих элементов в таблице
    */
+
+  int index = 0;       // текущий индекс элемента
+  int begin = 0;       // индекс начала диапазона одинаковых рангов
+  float prevRank = -1; // ранг предыдущего университета
 
   Iterator iter(this->data);
   while (iter.hasNext()) {
 
-    int res = another.search(iter.next()[1]);
-    float rank = iter.value()[0].toFloat();
+    int res = another.search(iter.next()[1]); // поиск в другой таблице
+    float rank = iter.value()[0].toFloat();   // получение значения текущего ранга
 
     if (res != -1) { // совпадение - не думаю
 
-      // если последняя запись == последней удаленной == текущей
-      if (prevRemRank == rank && prevRank == rank) { // удаленный ранг не единственный (сдвига нет)
-        prevRemRank = -1;                            // забыть удаленную запись, она не учитывается
-        change -= lastModified;                      // восстановить значение сдвига
+      // Если предыдущий ранг отличен от текущего
+      if (prevRank != rank) {
+
+        // Если есть диапазон одинаковых рангов
+        if (begin != index - 1) {
+          // Среднее арифметическое диапазона
+          float average = rangeAverage(begin, index);
+
+          // Обновить значения диапазона
+          for (int i = begin; i < index; ++i)
+            data[i][0] = QString::number(average);
+        }
+
+        // Значение текущего ранга
+        iter.value()[0] = QString::number(index + 1);
+        begin = index; // запомнить индекс текущего элемента
       }
 
-      prevRank = rank; // запомнить текущий ранг
+      ++index;         // увеличение индекса
+      prevRank = rank; // запоминание текущего старого значения текущего ранга
 
-      // Вычесть из текущего ранга текущее значение сдвига
-      iter.value()[0] = QString::number(rank - change);
-
-    } else { // различие
-
-      iter.remove(); // удалить запись
-
-      if (prevRank != rank) {           // если ранг текущей записи отличен от предыдущей
-        prevRemRank = rank;             // запомнить удаленный ранг
-        lastModified = rank - prevRank; // разница между рангами
-        change += lastModified;         // увеличить величину сдвига
-      }
-
-      prevRank = rank; // запомнить текущий ранг
-    }
+    } else // различие - просто удалить
+      iter.remove();
   }
 
-  // Обновление индексов
-  for (int i = 0; i < data.size(); ++i)
-    data[i][2] = QString::number(i + 1);
+  // Если остался диапазон после прохода
+  if (begin != data.size() - 1) {
+    // Среднее арифметическое диапазона
+    float average = rangeAverage(begin, data.size());
+
+    // Обновить значения диапазона
+    for (int i = begin; i < data.size(); ++i)
+      data[i][0] = QString::number(average);
+  }
 
   // Обновление максимального значения ранга
   maxRank = data[data.size() - 1][0].toFloat();
@@ -134,7 +156,6 @@ void Table::analysisWith(Table &another) {
 void Table::sortByName() {
   QCollator collator;
   collator.setNumericMode(true);
-
   std::sort(data.begin(), data.end(), [&collator](const QVector<QString> &a, const QVector<QString> &b) { return collator.compare(a[1], b[1]) < 0; });
 }
 

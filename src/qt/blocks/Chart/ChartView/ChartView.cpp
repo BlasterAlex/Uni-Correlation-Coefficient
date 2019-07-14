@@ -30,9 +30,8 @@ ChartView::ChartView(QVector<Table> &tables, QWidget *parent) : QChartView(new Q
   series1->setMarkerSize(10.0);
 
   // Добавление точек на плоскость
-  for (int i = 0; i < tableSize; ++i) {
+  for (int i = 0; i < tableSize; ++i)
     series1->append(tables[0].data[i][0].toFloat(), tables[1].data[i][0].toFloat());
-  }
 
   // Прямая y = x
   QLineSeries *series2 = new QLineSeries();

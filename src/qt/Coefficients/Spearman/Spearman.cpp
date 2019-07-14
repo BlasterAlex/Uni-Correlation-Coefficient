@@ -11,10 +11,10 @@ float Coefficients::getSpearmanCoeff(int firstI, int secondI) {
   int size = first.getSize();
 
   for (int i = 0; i < size; ++i) {
-    d = first.data[i][2].toInt() - second.data[i][2].toInt();
+    d = first.data[i][0].toFloat() - second.data[i][0].toFloat();
     coeff += d * d; // сумма квадратов разности рангов
   }
 
-  coeff = (6 * coeff) / (size * (size - 1) * (size + 1));
+  coeff = 1 - (6 * coeff / (size * (size - 1) * (size + 1)));
   return coeff;
 }

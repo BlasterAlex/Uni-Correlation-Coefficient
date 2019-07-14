@@ -43,7 +43,7 @@ float Coefficients::getKendallCoeff(int firstI, int secondI) {
       float b = second.data[i][0].toFloat();
       rows.insert(a, b);
     }
-    stream << "x" << separator << "y" << separator << tr("Совп.") << separator << tr("Инв.") << endl;
+    stream << "x" << separator << "y" << separator << russian("Совп.") << separator << russian("Инв.") << endl;
 
     float P = 0, Q = 0;
     for (auto it = rows.begin(); it != rows.end(); ++it) {
