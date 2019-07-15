@@ -76,9 +76,8 @@ function parseTable(table) {
       prevRank = -1;
       beginRange = -1;
 
-    } else if (rank.slice(-1) === '+') { // задан диапазон до конца таблицы
-      rank = i + 1;
     } else {
+      rank = rank.split('+')[0]; // убрать '+' в конце числа
 
       if (rank.slice(0, 1) === '=') // '=' перед числом
         rank = rank.slice(1);
@@ -113,6 +112,16 @@ function parseTable(table) {
     buffer.push($(el).find(table.name).text());
     universities.push(buffer);
   });
+
+  // Если остался диапазон после прохода
+  if (beginRange != universities.length - 1 && beginRange != -1) {
+    // Среднее арифметическое диапазона
+    average = rangeAverage(beginRange, universities.length);
+
+    // Обновить значения диапазона
+    for (let index = beginRange; index < universities.length; ++index)
+      universities[index][0] = average;
+  }
 
   return universities;
 }

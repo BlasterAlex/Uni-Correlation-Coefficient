@@ -8,8 +8,8 @@
 #include <QVector>
 #include <iostream>
 
-#include "../../Table/Table.hpp"
-#include "../../settings/settings.hpp"
+#include "../../../Table/Table.hpp"
+#include "../../../settings/settings.hpp"
 #include "../Coefficients.hpp"
 
 // Вычисление коэффициентов методом обмена

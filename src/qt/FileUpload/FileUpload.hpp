@@ -8,9 +8,9 @@
 #include <QVector>
 #include <QWidget>
 
-#include "../../Coefficients/Coefficients.hpp"
-#include "../../blocks/FileBlock/FileBlock.hpp"
-#include "../../blocks/UploadForm/UploadForm.hpp"
+#include "../blocks/FileBlock/FileBlock.hpp"
+#include "../blocks/UploadForm/UploadForm.hpp"
+#include "../dialog/Coefficients/Coefficients.hpp"
 
 class FileUpload : public QWidget {
   Q_OBJECT
@@ -51,6 +51,8 @@ private:
   bool checkExtensions();        // проверка файлов на тип
   int searchFileByName(QString); // поиск файла по имени
   void removeFile(QString);      // удаление файла по имени
+
+  QVector<Table> getParsedTables(QVector<QString>); // чтение таблиц из файлов
 };
 
 #endif // UPLOAD_H

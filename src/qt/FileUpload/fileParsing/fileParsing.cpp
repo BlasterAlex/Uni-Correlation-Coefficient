@@ -1,6 +1,6 @@
-#include "fileParsing.hpp"
 #include "../../Table/Table.hpp"
 #include "../../settings/settings.hpp"
+#include "../FileUpload.hpp"
 
 #include <QDebug>
 #include <QDir>
@@ -13,7 +13,7 @@ void parsingFiles(QVector<Table> &);
 void writingFiles(QVector<Table> &);
 
 // Чтение таблиц из файлов
-QVector<Table> getParsedTables(QVector<QString> files) {
+QVector<Table> FileUpload::getParsedTables(QVector<QString> files) {
   QVector<Table> tables; // массив таблиц
   foreach (const QString &filename, files) {
     Table table(filename);

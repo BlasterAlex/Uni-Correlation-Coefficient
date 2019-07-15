@@ -7,8 +7,8 @@
 #include <QTextStream>
 #include <QVector>
 
-#include "../../Table/Table.hpp"
-#include "../../settings/settings.hpp"
+#include "../../../Table/Table.hpp"
+#include "../../../settings/settings.hpp"
 #include "../Coefficients.hpp"
 
 // Вычисление коэффициентов Кендалла

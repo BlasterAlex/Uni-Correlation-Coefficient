@@ -12,8 +12,8 @@
 #include <QtCharts>
 
 #include "../../Table/Table.hpp"
+#include "../../blocks/ChartView/ChartView.hpp"
 #include "Chart.hpp"
-#include "ChartView/ChartView.hpp"
 
 Chart::Chart(QString n, QVector<Table> tables, QWidget *parent) : QDialog(parent) {
   cord = n;

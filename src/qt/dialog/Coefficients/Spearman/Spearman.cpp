@@ -1,8 +1,8 @@
-#include "../../Table/Table.hpp"
-#include "../Coefficients.hpp"
-
 #include <QString>
 #include <QVector>
+
+#include "../../../Table/Table.hpp"
+#include "../Coefficients.hpp"
 
 float Coefficients::getSpearmanCoeff(int firstI, int secondI) {
 

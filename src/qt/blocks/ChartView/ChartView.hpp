@@ -10,7 +10,7 @@
 #include <QVector>
 #include <QWidget>
 
-#include "../../../Table/Table.hpp"
+#include "../../Table/Table.hpp"
 
 QT_CHARTS_USE_NAMESPACE
 

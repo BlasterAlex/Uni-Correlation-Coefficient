@@ -17,13 +17,12 @@
 #include <QVector>
 #include <QWidget>
 
-#include "../../Coefficients/Coefficients.hpp"
-#include "../../Table/Table.hpp"
-#include "../../blocks/FileBlock/FileBlock.hpp"
-#include "../../blocks/HoverButton/HoverButton.hpp"
-#include "../../blocks/UploadForm/UploadForm.hpp"
-#include "../../settings/settings.hpp"
-#include "../fileParsing/fileParsing.hpp"
+#include "../Table/Table.hpp"
+#include "../blocks/FileBlock/FileBlock.hpp"
+#include "../blocks/HoverButton/HoverButton.hpp"
+#include "../blocks/UploadForm/UploadForm.hpp"
+#include "../dialog/Coefficients/Coefficients.hpp"
+#include "../settings/settings.hpp"
 #include "FileUpload.hpp"
 
 #define sendBlock qobject_cast<FileBlock *>

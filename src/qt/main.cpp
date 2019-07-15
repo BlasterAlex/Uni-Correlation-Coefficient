@@ -3,7 +3,7 @@
 #include <QIcon>
 #include <QWidget>
 
-#include "files/FileUpload/FileUpload.hpp"
+#include "FileUpload/FileUpload.hpp"
 #include "settings/settings.hpp"
 
 int main(int argc, char *argv[]) {

@@ -29,8 +29,8 @@
 #include <QVector>
 #include <QWidget>
 
-#include "../../blocks/Chart/Chart.hpp"
-#include "../../blocks/TableDialog/TableDialog.hpp"
+#include "../../Chart/Chart.hpp"
+#include "../../TableDialog/TableDialog.hpp"
 #include "../Coefficients.hpp"
 
 #define sendAction qobject_cast<QToolButton *>

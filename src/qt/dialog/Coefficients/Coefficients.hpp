@@ -13,9 +13,9 @@
 #include <QVector>
 #include <QWidget>
 
-#include "../Table/Table.hpp"
-#include "../blocks/Chart/Chart.hpp"
-#include "../blocks/TableDialog/TableDialog.hpp"
+#include "../../Table/Table.hpp"
+#include "../TableDialog/TableDialog.hpp"
+#include "../Chart/Chart.hpp"
 
 struct Coeff {
   QVector<int> parents; // номера таблиц, к которым относится коэффициент

@@ -19,8 +19,8 @@
 #include <QVector>
 #include <QWidget>
 
-#include "../Table/Table.hpp"
-#include "../settings/settings.hpp"
+#include "../../Table/Table.hpp"
+#include "../../settings/settings.hpp"
 #include "Coefficients.hpp"
 
 Coefficients::Coefficients(QVector<Table> t, QWidget *parent) : QDialog(parent) {

@@ -13,7 +13,7 @@
 #include <QWidget>
 #include <QtCharts>
 
-#include "../../../Table/Table.hpp"
+#include "../../Table/Table.hpp"
 #include "ChartView.hpp"
 
 ChartView::ChartView(QVector<Table> &tables, QWidget *parent) : QChartView(new QChart(), parent) {
