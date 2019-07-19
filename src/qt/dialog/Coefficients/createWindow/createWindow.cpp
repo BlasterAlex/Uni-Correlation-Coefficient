@@ -143,7 +143,7 @@ void Coefficients::createContentBlock() {
 
   // Заголовок
   QLabel *textLabel = new QLabel(contentBlock);
-  textLabel->setText("Коэффициенты корреляции Спирмана");
+  textLabel->setText("Коэффициенты корреляции Спирмена");
   QFont font = textLabel->font();
   font.setPointSize(10);
   font.setBold(true);
@@ -258,7 +258,7 @@ void Coefficients::action() {
     newDataTable(Kendall);
     break;
   case 2:
-    contentBlock->findChild<QLabel *>()->setText("Коэффициенты корреляции Спирмана");
+    contentBlock->findChild<QLabel *>()->setText("Коэффициенты корреляции Спирмена");
     newDataTable(Spearman);
     break;
   }

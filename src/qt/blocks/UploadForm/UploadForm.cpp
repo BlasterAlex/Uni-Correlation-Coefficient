@@ -18,8 +18,8 @@ UploadForm::UploadForm(QWidget *parent) : QGroupBox(parent) {
   setMouseTracking(true);
   setAttribute(Qt::WA_Hover);
 
-  setFixedWidth(160);
-  setFixedHeight(160);
+  setFixedWidth(180);
+  setFixedHeight(170);
 
   setStyleSheet("UploadForm {"
                 "  border: 2px solid rgba(178, 178, 178, 255);"

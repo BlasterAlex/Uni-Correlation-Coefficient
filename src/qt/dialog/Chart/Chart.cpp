@@ -21,6 +21,9 @@ Chart::Chart(QString n, QVector<Table> tables, QWidget *parent) : QDialog(parent
   setMinimumHeight(700);
   setMinimumWidth(700);
 
+  // Название
+  setWindowTitle("Диаграмма рассеяния");
+
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
   mainLayout->addWidget(new ChartView(tables, this));
 }
