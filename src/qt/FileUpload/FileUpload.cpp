@@ -49,6 +49,12 @@ FileUpload::FileUpload(QWidget *parent) : QWidget(parent) {
   mainLayout->addWidget(button);
   mainLayout->setAlignment(button, Qt::AlignHCenter);
   connect(button, SIGNAL(clicked()), this, SLOT(submit()));
+
+  HoverButton *button2 = new HoverButton("Страница", this);
+  button->setStyleSheet("margin-top: 10px; width: 120px; height: 25px;");
+  mainLayout->addWidget(button2);
+  mainLayout->setAlignment(button2, Qt::AlignHCenter);
+  connect(button2, SIGNAL(clicked()), this, SLOT(callPage()));
 }
 
 void FileUpload::createDragAndDrop() { // создание поля загрузки файлов
@@ -253,3 +259,8 @@ void FileUpload::submit() {
 
 // Обнуление счетчика открытых окон
 void FileUpload::noDialog() { dialog = false; }
+
+void FileUpload::callPage() {
+  page = new WebLoader(this);
+  page->show();
+}

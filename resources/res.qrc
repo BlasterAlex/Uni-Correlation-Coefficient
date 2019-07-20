@@ -1,0 +1,9 @@
+<RCC>
+  <qresource prefix="/html">
+    <file>html/page.html</file>
+  </qresource>
+  <qresource prefix="/js">
+    <file>js/jquery-3.4.1.min.js</file>
+    <file>js/page.js</file>
+  </qresource>
+</RCC>

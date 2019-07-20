@@ -11,6 +11,7 @@
 #include "../blocks/FileBlock/FileBlock.hpp"
 #include "../blocks/UploadForm/UploadForm.hpp"
 #include "../dialog/Coefficients/Coefficients.hpp"
+#include "../dialog/WebLoader/WebLoader.hpp"
 
 class FileUpload : public QWidget {
   Q_OBJECT
@@ -31,6 +32,7 @@ private slots:
   void removeFile();   // удаление файла из списка
   void submit();       // отправка данных
   void noDialog();     // обновить состояние диалогового окна
+  void callPage();
 
 private:
   // Поле для загрузки файлов
@@ -45,6 +47,8 @@ private:
   // Окно результатов вычислений
   Coefficients *coeff;
   bool dialog = false;
+
+  WebLoader *page;
 
   void createDragAndDrop();      // создание поля загрузки файлов
   void createFileList();         // вывод списка загруженных файлов

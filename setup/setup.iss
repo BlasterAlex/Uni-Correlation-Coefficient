@@ -48,6 +48,11 @@ Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\config\*"; DestD
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\data\images\*"; DestDir: "{app}\data\images"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\data\images\icons\*"; DestDir: "{app}\data\images\icons"; Flags: ignoreversion
 
+; Resources for web
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\html\*"; DestDir: "{app}\resources\html"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\js\*"; DestDir: "{app}\resources\js"; Flags: ignoreversion
+
 ; Extension for Chrome
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\src\extention\*"; DestDir: "{app}\extention"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\src\extention\data\css\*"; DestDir: "{app}\extention\data\css"; Flags: ignoreversion
@@ -57,17 +62,23 @@ Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\src\extention\sr
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\src\extention\src\js\*"; DestDir: "{app}\extention\src\js"; Flags: ignoreversion
 
 ; Libraries     
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\libgcc_s_dw2-1.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\libstdc++-6.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\libwinpthread-1.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Charts.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Core.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Gui.dll"; DestDir: "{app}"; Flags: ignoreversion
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Svg.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Network.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Positioning.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5PrintSupport.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Qml.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Quick.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5QuickWidgets.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5WebChannel.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5WebEngineCore.dll"; DestDir: "{app}"; Flags: ignoreversion
+Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5WebEngineWidgets.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\Qt5Widgets.dll"; DestDir: "{app}"; Flags: ignoreversion
+
+; Other
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\imageformats\*"; DestDir: "{app}\imageformats"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\platforms\*"; DestDir: "{app}\platforms"; Flags: ignoreversion
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\styles\*"; DestDir: "{app}\styles"; Flags: ignoreversion
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 

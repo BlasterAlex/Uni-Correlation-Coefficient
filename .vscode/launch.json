@@ -17,8 +17,8 @@
       "MIMode": "gdb",
       "miDebuggerPath": "/usr/bin/gdb",
       "windows": {
+        "type": "cppvsdbg",
         "program": "${workspaceFolder}/${workspaceFolderBasename}.exe",
-        "miDebuggerPath": "D:\\ALEX\\uSoft\\Qt\\Tools\\mingw730_32\\bin\\gdb.exe",
         "externalConsole": true
       },
       "preLaunchTask": "build",

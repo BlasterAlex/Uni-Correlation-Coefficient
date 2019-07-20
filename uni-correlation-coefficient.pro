@@ -2,13 +2,17 @@ TEMPLATE = app
 TARGET = uni-correlation-coefficient
 INCLUDEPATH += .
 
+CONFIG += c++11
+
 DEFINES += QT_DEPRECATED_WARNINGS
 
-QT += core gui widgets charts
+QT += core gui widgets charts webengine webenginewidgets
 
 MOC_DIR     = build
 OBJECTS_DIR = build
 RC_FILE     = data/images/icons/icon.rc
+
+RESOURCES += resources/res.qrc
 
 # Input
 HEADERS += \ # Work with setting file
@@ -25,6 +29,7 @@ HEADERS += \ # Work with setting file
            src/qt/dialog/Coefficients/Coefficients.hpp \
            src/qt/dialog/TableDialog/TableDialog.hpp \
            src/qt/dialog/TableDialog/FloatItem/FloatItem.hpp \
+           src/qt/dialog/WebLoader/WebLoader.hpp \ 
            \
            \ # Work with user files
            src/qt/FileUpload/FileUpload.hpp \
@@ -51,6 +56,7 @@ SOURCES += src/qt/main.cpp \
            src/qt/dialog/Coefficients/Kendall/Kendall.cpp \
            src/qt/dialog/Coefficients/Spearman/Spearman.cpp \
            src/qt/dialog/TableDialog/TableDialog.cpp \
+           src/qt/dialog/WebLoader/WebLoader.cpp \
            \
            \ # Work with user files
            src/qt/FileUpload/FileUpload.cpp \
