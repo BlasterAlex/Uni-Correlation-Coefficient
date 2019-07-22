@@ -1,7 +1,9 @@
 #ifndef TABLE_H
 #define TABLE_H
 
+#include <QList>
 #include <QString>
+#include <QVariant>
 #include <QVector>
 
 class Table {
@@ -11,11 +13,13 @@ class Table {
 
 public:
   explicit Table() {}
-  explicit Table(QString filename);
+  explicit Table(QString);
+  explicit Table(QList<QList<QVariant>>, QString);
   ~Table() {}
 
   int search(QString);        // поиск в таблице
   void writeToCSV();          // запись таблицы в файл
+  bool createNewFile();       // сохранение новой таблицы
   void analysisWith(Table &); // сравнение с другой таблицей
   void sortByName();          // сортировка таблицы по названиям
   int getSize();              // получение размера таблицы

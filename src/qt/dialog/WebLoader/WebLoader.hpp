@@ -1,36 +1,71 @@
 #ifndef WEBLOADER_H
 #define WEBLOADER_H
 
+#include <QCloseEvent>
 #include <QDialog>
+#include <QLabel>
 #include <QList>
 #include <QMainWindow>
+#include <QProgressBar>
 #include <QString>
+#include <QThread>
+#include <QTimer>
 #include <QWebEngineView>
 #include <QWidget>
 
 class WebLoader : public QDialog {
   Q_OBJECT
 
-  QList<QList<QVariant>> someTable;
-
 public:
   explicit WebLoader(QWidget *parent = 0);
   virtual ~WebLoader() {}
 
-private slots:
-  void readPage(bool);
-
-public slots:
-  void message(QVariant text) { qDebug() << text.toString(); }
-  void endOfTable();
-  void addTableRow(QList<QVariant> arg) { someTable.append(arg); }
+protected:
+  void reject(); // закрытие окна
 
 private:
-  QWebEngineView *view;
+  // Полоска загрузки
+  QLabel *progress_label;
+  QProgressBar *progress_bar;
+
+  // Страница ресурса
+  bool webV = false;
   QWebEngineView *webView;
 
+  // Названия ресурсов для загрузки
+  QVector<QString> resources = {"ARWU1", "CWUR", "RUR", "THE"};
+
+  // Хранимая таблица рейтингов
+  QList<QList<QVariant>> someTable;
+
+  // Спрашивать при замене файлов
+  bool ask;
+
+  // Состояние процесса загрузки
+  bool done = false;
+
+  void filesUpload();       // загрузка всех файлов
+  void fileUpload();        // загрузка одного файла
+  bool urlExists(QString);  // проверка url на доступность
+  void readPage();          // чтение очередной страницы
+  bool completenessCheck(); // разрешение на закрытие окна
+
+private slots:
+  void loadFinished(bool); // загрузка страницы завершена
+  void goToNextTable();    // переход к следующей таблице
+
+public slots:
+  void addTableRow(QList<QVariant>); // получение строки таблицы
+  void endOfTable();                 // чтение таблицы завершено
+  void setLabelText(QString);        // вывод сообщения
+
 signals:
-  void sendMessage(const QString &text);
+  void tableDone();             // окончание загрузки таблицы
+  void fileAddRequest(QString); // добавление файла в главную форму
+  void fileDelRequest(QString); // удаление файла из главной формы
+  void shutdown();              // событие закрытия окна
+
+  friend class FileUpload;
 };
 
 #endif // WEBLOADER_H

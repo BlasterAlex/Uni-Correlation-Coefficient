@@ -27,10 +27,10 @@
 
 #define sendBlock qobject_cast<FileBlock *>
 
-FileUpload::FileUpload(QWidget *parent) : QWidget(parent) {
-
+FileUpload::FileUpload(QWidget *parent) : QMainWindow(parent) {
+  QWidget *central = new QWidget(this);
   // Основной слой
-  QVBoxLayout *mainLayout = new QVBoxLayout(this);
+  QVBoxLayout *mainLayout = new QVBoxLayout(central);
   mainLayout->setAlignment(Qt::AlignHCenter);
   setMinimumWidth(455);
 
@@ -55,6 +55,8 @@ FileUpload::FileUpload(QWidget *parent) : QWidget(parent) {
   mainLayout->addWidget(button2);
   mainLayout->setAlignment(button2, Qt::AlignHCenter);
   connect(button2, SIGNAL(clicked()), this, SLOT(callPage()));
+
+  setCentralWidget(central);
 }
 
 void FileUpload::createDragAndDrop() { // создание поля загрузки файлов
@@ -131,7 +133,7 @@ void FileUpload::formSubmited() {
       // Загружаемый файл существует в папке загрузок
       if (QFile::exists(target + filename)) {
         QMessageBox::StandardButton reply;
-        reply = QMessageBox::critical(this, "Ошибка загрузки", "Файл '" + filename + "' уже существует!\nМожно переписать этот файл?",
+        reply = QMessageBox::question(this, "Файл существует", "Файл '" + filename + "' уже существует!\nМожно переписать этот файл?",
                                       QMessageBox::Yes | QMessageBox::No);
         if (reply == QMessageBox::Yes)
           removeFile(filename); // удаление файла
@@ -159,6 +161,11 @@ void FileUpload::addFile(QString file) {
   connect(block, SIGNAL(remove()), this, SLOT(removeFile()));
   fileList.push_back(block);
   fileListBlock->layout()->addWidget(block);
+
+  if (fileList.size()) {
+    fileListBlock->show();
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+  }
 }
 
 // Удаление файла из списка
@@ -260,7 +267,27 @@ void FileUpload::submit() {
 // Обнуление счетчика открытых окон
 void FileUpload::noDialog() { dialog = false; }
 
+// Вызов окна загрузки файлов
 void FileUpload::callPage() {
-  page = new WebLoader(this);
-  page->show();
+  if (!web) {
+    page = new WebLoader(this);
+    page->show();
+    page->filesUpload();
+    web = true;
+
+    connect(page, SIGNAL(shutdown()), this, SLOT(noWebDialog()));
+    connect(page, SIGNAL(fileDelRequest(QString)), this, SLOT(removeFile(QString)));
+    connect(page, SIGNAL(fileAddRequest(QString)), this, SLOT(addFile(QString)));
+  }
+}
+
+// Обновить состояние диалогового окна загрузки
+void FileUpload::noWebDialog() { web = false; }
+
+// Событие закрытия окна
+void FileUpload::closeEvent(QCloseEvent *event) {
+  if (web && !page->completenessCheck()) {
+    event->ignore();
+  } else
+    event->accept();
 }

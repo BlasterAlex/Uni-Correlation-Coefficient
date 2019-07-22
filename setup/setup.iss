@@ -50,7 +50,6 @@ Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\data\images\icon
 
 ; Resources for web
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\html\*"; DestDir: "{app}\resources\html"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\js\*"; DestDir: "{app}\resources\js"; Flags: ignoreversion
 
 ; Extension for Chrome

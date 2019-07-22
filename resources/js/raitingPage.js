@@ -99,25 +99,68 @@ function parseTable(table) {
   return universities;
 }
 
+// Получение таблицы рейтингов
 function getTable(param) {
+  // Канал для передачи данных в qt
+  new QWebChannel(qt.webChannelTransport, function (channel) {
+    var api = channel.objects.api;
+    window.foo = api;
 
-  new QWebChannel(qt.webChannelTransport,
-    function (channel) {
-      var api = channel.objects.api;
-      window.foo = api;
+    // Разбор структуры
+    let t = param.split(', ');
 
-      let t = param.split(', ');
-
-      let table = parseTable({
-        headline: t[0],
-        rank: t[1],
-        name: t[2]
-      });
-
-      table.forEach(element => {
-        api.addTableRow(element);
-      });
-
-      api.endOfTable();
+    // Получение таблицы со страницы
+    let table = parseTable({
+      headline: t[0],
+      rank: t[1],
+      name: t[2]
     });
+
+    // Передача данных в qt
+    table.forEach(element => {
+      api.addTableRow(element);
+    });
+
+    api.endOfTable();
+  });
+}
+
+// Получение второй части таблицы
+function getSecondPart(param) {
+  // Канал для передачи данных в qt
+  new QWebChannel(qt.webChannelTransport, function (channel) {
+    var api = channel.objects.api;
+    window.foo = api;
+
+    // Разбор структуры
+    let t = param.split(', ');
+    let table = {
+      headline: t[0],
+      rank: t[1],
+      name: t[2]
+    };
+
+    // Чтение таблицы со страницы
+    $(table.headline).each(function (i, el) {
+      if (i) {
+        let buffer = new Array;
+
+        // Получение ранга
+        let rank = $(el).find(table.rank).text();
+        let ranks = rank.split('-');
+
+        if (ranks.length == 2) { // два числа
+          rank = (parseInt(ranks[0]) + parseInt(ranks[1])) / 2;
+          rank = parseInt(rank);
+        }
+
+        buffer.push(rank);
+        buffer.push($(el).find(table.name).text());
+
+        api.addTableRow(buffer);
+      }
+    });
+
+    api.endOfTable();
+  });
 }

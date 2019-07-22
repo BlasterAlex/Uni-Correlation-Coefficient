@@ -4,6 +4,7 @@
 #include <QCloseEvent>
 #include <QGroupBox>
 #include <QLabel>
+#include <QMainWindow>
 #include <QStringList>
 #include <QVector>
 #include <QWidget>
@@ -13,7 +14,7 @@
 #include "../dialog/Coefficients/Coefficients.hpp"
 #include "../dialog/WebLoader/WebLoader.hpp"
 
-class FileUpload : public QWidget {
+class FileUpload : public QMainWindow {
   Q_OBJECT
 
 public:
@@ -25,14 +26,17 @@ public:
   }
 
 protected:
-  void addFile(QString); // добавление нового файла
+  void closeEvent(QCloseEvent *); // закрытие окна
 
 private slots:
-  void formSubmited(); // загрузка файлов с формы
-  void removeFile();   // удаление файла из списка
-  void submit();       // отправка данных
-  void noDialog();     // обновить состояние диалогового окна
-  void callPage();
+  void formSubmited();      // загрузка файлов с формы
+  void addFile(QString);    // добавление нового файла
+  void removeFile();        // удаление файла из списка
+  void removeFile(QString); // удаление файла по имени
+  void submit();            // отправка данных
+  void callPage();          // вызов окна загрузки файлов
+  void noDialog();          // обновить состояние диалогового окна
+  void noWebDialog();       // обновить состояние диалогового окна загрузки
 
 private:
   // Поле для загрузки файлов
@@ -48,13 +52,14 @@ private:
   Coefficients *coeff;
   bool dialog = false;
 
+  // Скачивание новых таблиц
   WebLoader *page;
+  bool web = false;
 
   void createDragAndDrop();      // создание поля загрузки файлов
   void createFileList();         // вывод списка загруженных файлов
   bool checkExtensions();        // проверка файлов на тип
   int searchFileByName(QString); // поиск файла по имени
-  void removeFile(QString);      // удаление файла по имени
 
   QVector<Table> getParsedTables(QVector<QString>); // чтение таблиц из файлов
 };

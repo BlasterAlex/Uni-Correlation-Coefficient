@@ -1,73 +1,97 @@
+#include <QCloseEvent>
 #include <QEventLoop>
 #include <QFile>
-#include <QMainWindow>
+#include <QGroupBox>
+#include <QMessageBox>
 #include <QNetworkAccessManager>
 #include <QNetworkReply>
 #include <QString>
+#include <QTcpSocket>
 #include <QTextStream>
+#include <QThread>
 #include <QVBoxLayout>
 #include <QWebChannel>
 #include <QWebEngineView>
 #include <QWidget>
 
+#include "../../settings/settings.hpp"
 #include "WebLoader.hpp"
 
 WebLoader::WebLoader(QWidget *parent) : QDialog(parent) {
 
-  // Рейтинги
-  webView = new QWebEngineView(this);
-  connect(webView, SIGNAL(loadFinished(bool)), SLOT(readPage(bool)));
+  // Заголовок
+  setWindowTitle("Загрузка файлов");
 
-  QWebChannel *channel = new QWebChannel(this);
-  channel->registerObject("api", this);
-  webView->page()->setWebChannel(channel);
+  // Основной слой
+  QVBoxLayout *mainLayout = new QVBoxLayout(this);
+  mainLayout->setMargin(0);
+  mainLayout->setContentsMargins(8, 8, 8, 8);
+  mainLayout->setSpacing(0);
 
-  webView->load(
-      QUrl("https://www.timeshighereducation.com/world-university-rankings/2019/subject-ranking/engineering-and-IT#!/page/0/length/-1/sort_by/"));
-  webView->hide();
+  // Полоска загрузки
+  QGroupBox *progress = new QGroupBox(this);
+  QVBoxLayout *vbox = new QVBoxLayout(progress);
 
-  // Page
-  view = new QWebEngineView(this);
-  view->load(QUrl("qrc:/html/html/page.html"));
+  progress_bar = new QProgressBar(progress);
+  progress_bar->setMinimum(1);
+  progress_bar->setMaximum(getWebRes("info/quantity").toInt() * 4); // количество таблиц * 4
+  vbox->addWidget(progress_bar);
 
-  QVBoxLayout *viewLayout = new QVBoxLayout;
-  viewLayout->addWidget(view);
+  progress_label = new QLabel(progress);
+  progress_label->setText("Загрузка...");
+  vbox->addWidget(progress_label);
+  mainLayout->addWidget(progress);
 
-  setLayout(viewLayout);
+  setLayout(mainLayout);
 }
 
-void WebLoader::readPage(bool) {
-  // Загрузка webchannel
-  QFile fileChannel;
-  fileChannel.setFileName("resources/js/qwebchannel.js");
-  fileChannel.open(QIODevice::ReadOnly);
-  QString webchannel = fileChannel.readAll();
-  fileChannel.close();
-  webView->page()->runJavaScript(webchannel);
+void WebLoader::filesUpload() { // загрузка всех файлов
 
-  // Загрузка Jquery
-  QFile fileJquery;
-  fileJquery.setFileName("resources/js/jquery-3.4.1.min.js");
-  fileJquery.open(QIODevice::ReadOnly);
-  QString jquery = fileJquery.readAll();
-  fileJquery.close();
-  webView->page()->runJavaScript(jquery);
+  // Отключение ненавязчивых вопросов
+  QMessageBox::StandardButton reply;
+  reply = QMessageBox::question(this, "Вопрос", "Можно перезаписывать существующие файлы?", QMessageBox::Yes | QMessageBox::No);
+  if (reply == QMessageBox::Yes)
+    ask = false;
+  else
+    ask = true;
 
-  // Загрузка js
-  QFile fileJS;
-  fileJS.setFileName("resources/js/raitingPage.js");
-  fileJS.open(QIODevice::ReadOnly);
-  QString js = fileJS.readAll();
-  fileJS.close();
-  webView->page()->runJavaScript(js);
+  // Отслеживание события завершения загрузки таблицы
+  connect(this, &WebLoader::tableDone, this, &WebLoader::goToNextTable);
 
-  // Вызов функции из js
-  webView->page()->runJavaScript("getTable('.table tbody tr, .rank, .name .ranking-institution-title')");
+  // Запуск процесса
+  fileUpload();
+  return;
 }
 
-void WebLoader::endOfTable() {
-  foreach (QList<QVariant> row, someTable)
-    qDebug() << row[0].toString() << ": " << row[1].toString();
+// Переход к следующей таблице
+void WebLoader::goToNextTable() {
+  resources.remove(0);
 
-  view->page()->runJavaScript("addStep();");
+  if (resources.empty()) {
+    qDebug() << "Done";
+    setLabelText("Загрузка завершена");
+
+    done = true;
+    if (webV)
+      delete webView;
+  } else
+    fileUpload();
+}
+
+// Разрешение на закрытие окна
+bool WebLoader::completenessCheck() {
+  if (done)
+    return true;
+  else {
+    QMessageBox::critical(this, "Загрузка не завершена", "Процесс загрузки еще не завершился, пожалуйста подождите");
+    return false;
+  }
+}
+
+// Событие закрытия окна
+void WebLoader::reject() {
+  if (completenessCheck()) {
+    emit shutdown();
+    QDialog::reject();
+  }
 }

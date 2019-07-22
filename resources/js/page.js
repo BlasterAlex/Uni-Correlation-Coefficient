@@ -1,3 +1,0 @@
-function addStep() {
-  alert("Done");
-}

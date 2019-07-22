@@ -11,4 +11,6 @@ void setSetting(QString, QVector<QVariant>);
 QVariant getSetting(QString);
 QVector<QVariant> getVectorSettings(QString);
 
+QVariant getWebRes(QString);
+
 #endif // SETTINGS_H

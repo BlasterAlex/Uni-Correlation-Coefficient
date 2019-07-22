@@ -5,9 +5,11 @@
 #include <QDebug>
 #include <QDir>
 #include <QFile>
+#include <QList>
 #include <QString>
 #include <QTextCodec>
 #include <QTextStream>
+#include <QVariant>
 #include <QVector>
 
 #define Iterator QMutableVectorIterator<QVector<QString>>
@@ -66,6 +68,26 @@ Table::Table(QString filename) : name(filename) {
   }
 }
 
+// Чтение таблицы из двумерного списка
+Table::Table(QList<QList<QVariant>> list, QString filename) : name(filename) {
+  QVector<QVector<QString>> table;
+
+  foreach (QList<QVariant> row, list) {
+    QVector<QString> tableLine;
+
+    tableLine.push_back(row[0].toString());
+    tableLine.push_back(row[1].toString());
+
+    table.push_back(tableLine);
+  }
+
+  // Сохранение новой таблицы
+  data = table;
+
+  // Сохранение максимального значения ранга
+  maxRank = data[data.size() - 1][0].toFloat();
+}
+
 // Поиск в таблице
 int Table::search(QString keyName) {
   int index = 0;
@@ -89,6 +111,22 @@ void Table::writeToCSV() {
       stream << tableLine[0] << separator << tableLine[1] << endl;
     file.close();
   }
+}
+
+// Сохранение новой таблицы
+bool Table::createNewFile() {
+  QString path = getSetting("uploads/dir").toString() + QDir::separator();
+  QString separator = getSetting("uploads/csvSeparator").toString();
+
+  QFile file(path + name);
+  if (file.open(QFile::WriteOnly | QFile::Truncate)) {
+    QTextStream stream(&file);
+    foreach (QVector<QString> tableLine, data)
+      stream << tableLine[0] << separator << tableLine[1] << endl;
+    file.close();
+    return true;
+  } else
+    return false;
 }
 
 // Сравнение с другой таблицей
