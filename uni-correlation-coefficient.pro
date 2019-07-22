@@ -53,7 +53,6 @@ SOURCES += src/qt/main.cpp \
            src/qt/dialog/Coefficients/Spearman/Spearman.cpp \
            src/qt/dialog/TableDialog/TableDialog.cpp \
            src/qt/dialog/WebLoader/WebLoader.cpp \
-           src/qt/dialog/WebLoader/fileUpload.cpp \
            \
            \ # Work with user files
            src/qt/FileUpload/FileUpload.cpp \
