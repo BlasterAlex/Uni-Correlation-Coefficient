@@ -10,9 +10,9 @@
 #include <QWebChannel>
 #include <QWebEngineView>
 
-#include "../../Table/Table.hpp"
-#include "../../settings/settings.hpp"
-#include "WebLoader.hpp"
+#include "../../../Table/Table.hpp"
+#include "../../../settings/settings.hpp"
+#include "../WebLoader.hpp"
 
 void WebLoader::fileUpload() { // загрузка одного файла
   QString url = getWebRes(resources[0] + "/href").toString();
@@ -131,51 +131,65 @@ void WebLoader::endOfTable() { // чтение таблицы завершено
   setLabelText("Таблица " + resources[0] + " получена");
   progress_bar->setValue(progress_bar->value() + 1);
 
-  if (resources[0] != "ARWU1") { // если это вся таблица
-    // Запись полученной таблицы в файл
-    QString filename;
-    if (resources[0] != "ARWU2")
-      filename = resources[0] + ".csv";
-    else
-      filename = resources[0].left(resources[0].length() - 1) + ".csv";
+  if (someTable.size() == 0 || someTable.size() == 1) {
+    timer->stop();
+    QMessageBox::critical(this, "Ошибка загрузки", "Загруженная таблица " + resources[0] + " пустая. Пропускается");
 
-    Table table(someTable, filename);
-    progress_bar->setValue(progress_bar->value() + 1);
+    setLabelText("Переход к следующему файлу");
+    progress_bar->setValue(progress_bar->value() + 2);
 
-    QString target = getSetting("uploads/dir").toString() + QDir::separator();
-    if (QFile::exists(target)) {
+    timer->start();
+    emit tableDone();
+  } else {
+    if (resources[0] != "ARWU1") { // если это вся таблица
+      // Запись полученной таблицы в файл
+      QString filename;
+      if (resources[0] != "ARWU2")
+        filename = resources[0] + ".csv";
+      else
+        filename = resources[0].left(resources[0].length() - 1) + ".csv";
 
-      if (QFile::exists(target + filename)) { // такой файл уже есть
-        if (ask) {
-          QMessageBox::StandardButton reply;
-          reply = QMessageBox::critical(this, "Файл существует", "Файл '" + filename + "' уже существует!\nМожно переписать этот файл?",
-                                        QMessageBox::Yes | QMessageBox::No);
-          if (reply == QMessageBox::Yes) {
-            emit fileDelRequest(filename); // удаление файла
-          } else {
-            setLabelText("Переход к следующему файлу");
-            progress_bar->setValue(progress_bar->value() + 1);
-
-            emit tableDone();
-            return;
-          }
-        } else
-          emit fileDelRequest(filename); // удаление файла
-      }
+      Table table(someTable, filename);
       progress_bar->setValue(progress_bar->value() + 1);
-      if (table.createNewFile()) {
-        setLabelText("Файл " + filename + " успешно сохранен");
-        emit fileAddRequest(filename);
-      } else {
-        setLabelText("Ошибка загрузки файла " + filename);
-      }
 
-      emit tableDone();
+      QString target = getSetting("uploads/dir").toString() + QDir::separator();
+      if (QFile::exists(target)) {
+
+        if (QFile::exists(target + filename)) { // такой файл уже есть
+          if (ask) {
+            timer->stop();
+            QMessageBox::StandardButton reply;
+            reply = QMessageBox::critical(this, "Файл существует", "Файл '" + filename + "' уже существует!\nМожно переписать этот файл?",
+                                          QMessageBox::Yes | QMessageBox::No);
+            if (reply == QMessageBox::Yes) {
+              emit fileDelRequest(filename); // удаление файла
+              timer->start();
+            } else {
+              setLabelText("Переход к следующему файлу");
+              progress_bar->setValue(progress_bar->value() + 1);
+
+              timer->start();
+              emit tableDone();
+              return;
+            }
+          } else
+            emit fileDelRequest(filename); // удаление файла
+        }
+        progress_bar->setValue(progress_bar->value() + 1);
+        if (table.createNewFile()) {
+          setLabelText("Файл " + filename + " успешно сохранен");
+          emit fileAddRequest(filename);
+        } else {
+          setLabelText("Ошибка загрузки файла " + filename);
+        }
+
+        emit tableDone();
+      }
+    } else { // таблица разбита на две части
+      progress_bar->setValue(progress_bar->value() + 1);
+      resources[0] = "ARWU2"; // имя второй таблицы
+      progress_bar->setValue(progress_bar->value() + 1);
+      fileUpload();
     }
-  } else { // таблица разбита на две части
-    progress_bar->setValue(progress_bar->value() + 1);
-    resources[0] = "ARWU2"; // имя второй таблицы
-    progress_bar->setValue(progress_bar->value() + 1);
-    fileUpload();
   }
 }

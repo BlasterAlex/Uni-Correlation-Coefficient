@@ -6,6 +6,7 @@
 #include <QLabel>
 #include <QMainWindow>
 #include <QStringList>
+#include <QToolButton>
 #include <QVector>
 #include <QWidget>
 
@@ -30,15 +31,20 @@ protected:
 
 private slots:
   void formSubmited();      // загрузка файлов с формы
+  void refreshList();       // обновление списка файлов
   void addFile(QString);    // добавление нового файла
   void removeFile();        // удаление файла из списка
   void removeFile(QString); // удаление файла по имени
   void submit();            // отправка данных
-  void callPage();          // вызов окна загрузки файлов
+  void callWeb();           // вызов окна загрузки файлов
   void noDialog();          // обновить состояние диалогового окна
   void noWebDialog();       // обновить состояние диалогового окна загрузки
 
 private:
+  // Меню
+  QGroupBox *menu;
+  QToolButton *dwnMenu;
+
   // Поле для загрузки файлов
   UploadForm *dragAndDrop;
 
@@ -56,6 +62,7 @@ private:
   WebLoader *page;
   bool web = false;
 
+  void createMenu();             // создание меню
   void createDragAndDrop();      // создание поля загрузки файлов
   void createFileList();         // вывод списка загруженных файлов
   bool checkExtensions();        // проверка файлов на тип

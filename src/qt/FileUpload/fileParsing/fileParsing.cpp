@@ -17,6 +17,10 @@ QVector<Table> FileUpload::getParsedTables(QVector<QString> files) {
   QVector<Table> tables; // массив таблиц
   foreach (const QString &filename, files) {
     Table table(filename);
+
+    if (table.getSize() == 0 || table.getSize() == 1) // пустая таблица
+      return QVector<Table>();
+
     tables.push_back(table);
   }
   parsingFiles(tables);

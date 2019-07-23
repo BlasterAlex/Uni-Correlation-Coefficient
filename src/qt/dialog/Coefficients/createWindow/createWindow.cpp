@@ -58,26 +58,26 @@ void Coefficients::setMenu() {
 
   // Кнопки действий
   QToolButton *act1 = new QToolButton(toolBar);
-  act1->setText("&Exchange");
+  act1->setText("&Обмен");
   act1->setStyleSheet("color: black");
   act1->setFocusPolicy(Qt::NoFocus);
-  act1->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_E));
+  act1->setShortcut(QKeySequence(Qt::ALT + Qt::Key_J));
   toolBar->addWidget(act1);
   connect(act1, SIGNAL(clicked()), this, SLOT(action()));
 
   QToolButton *act2 = new QToolButton(toolBar);
-  act2->setText("&Kendall");
+  act2->setText("&Кендалл");
   act2->setStyleSheet("color: black");
   act2->setFocusPolicy(Qt::NoFocus);
-  act2->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_K));
+  act2->setShortcut(QKeySequence(Qt::ALT + Qt::Key_R));
   toolBar->addWidget(act2);
   connect(act2, SIGNAL(clicked()), this, SLOT(action()));
 
   QToolButton *act3 = new QToolButton(toolBar);
-  act3->setText("&Spearman");
-  act3->setStyleSheet("color: #f54545;");
+  act3->setText("&Спирмен");
+  act3->setStyleSheet("color: #f54545");
   act3->setFocusPolicy(Qt::NoFocus);
-  act3->setShortcut(QKeySequence(Qt::CTRL + Qt::Key_S));
+  act3->setShortcut(QKeySequence(Qt::ALT + Qt::Key_C));
   toolBar->addWidget(act3);
   connect(act3, SIGNAL(clicked()), this, SLOT(action()));
 
@@ -237,9 +237,9 @@ void Coefficients::displayResults() {
 // Нажатие кнопки меню
 void Coefficients::action() {
   QStringList actions;
-  actions << "&Exchange"
-          << "&Kendall"
-          << "&Spearman";
+  actions << "&Обмен"
+          << "&Кендалл"
+          << "&Спирмен";
 
   // Сброс стилей для всех кнопок
   QList<QToolButton *> toolButtons = toolBar->findChildren<QToolButton *>();

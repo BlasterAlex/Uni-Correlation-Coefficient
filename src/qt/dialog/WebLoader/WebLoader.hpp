@@ -13,6 +13,8 @@
 #include <QWebEngineView>
 #include <QWidget>
 
+#include "../../blocks/HoverButton/HoverButton.hpp"
+
 class WebLoader : public QDialog {
   Q_OBJECT
 
@@ -27,6 +29,10 @@ private:
   // Полоска загрузки
   QLabel *progress_label;
   QProgressBar *progress_bar;
+
+  // Вращающийся индикатор загрузки
+  QTimer *timer;
+  QLabel *progress_indicator;
 
   // Страница ресурса
   bool webV = false;
@@ -44,6 +50,9 @@ private:
   // Состояние процесса загрузки
   bool done = false;
 
+  // Кнопка завершения
+  HoverButton *exitButton;
+
   void filesUpload();       // загрузка всех файлов
   void fileUpload();        // загрузка одного файла
   bool urlExists(QString);  // проверка url на доступность
@@ -53,6 +62,8 @@ private:
 private slots:
   void loadFinished(bool); // загрузка страницы завершена
   void goToNextTable();    // переход к следующей таблице
+  void updateIndicator();  // обновление индикатора
+  void leave();            // закрытие окна по нажатию
 
 public slots:
   void addTableRow(QList<QVariant>); // получение строки таблицы
