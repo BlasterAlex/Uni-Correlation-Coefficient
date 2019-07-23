@@ -31,8 +31,8 @@ WebLoader::WebLoader(QWidget *parent) : QDialog(parent) {
   // Основной слой
   QVBoxLayout *mainLayout = new QVBoxLayout(this);
   mainLayout->setMargin(0);
-  mainLayout->setContentsMargins(8, 8, 8, 8);
-  mainLayout->setSpacing(0);
+  mainLayout->setContentsMargins(8, 8, 8, 10);
+  mainLayout->setSpacing(8);
 
   // Полоска загрузки
   QGroupBox *progress = new QGroupBox(this);
@@ -44,9 +44,6 @@ WebLoader::WebLoader(QWidget *parent) : QDialog(parent) {
   vbox->addWidget(progress_bar);
 
   mainLayout->addWidget(progress);
-
-  // Разделитель
-  mainLayout->addItem(new QSpacerItem(40, 8, QSizePolicy::Expanding, QSizePolicy::Minimum));
 
   // Текстовые поля
   QHBoxLayout *textLayout = new QHBoxLayout(this);
@@ -66,7 +63,7 @@ WebLoader::WebLoader(QWidget *parent) : QDialog(parent) {
 
   // Кнопка выхода
   exitButton = new HoverButton("Выйти", this);
-  exitButton->setStyleSheet("margin: 15px 0 10px 0; width: 120px; height: 25px;");
+  exitButton->setStyleSheet("width: 120px; height: 15px;");
   mainLayout->addWidget(exitButton, 0, Qt::AlignTop | Qt::AlignHCenter);
   exitButton->hide();
   connect(exitButton, &HoverButton::clicked, this, &WebLoader::leave);

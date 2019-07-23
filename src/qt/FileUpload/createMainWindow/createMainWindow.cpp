@@ -66,9 +66,9 @@ void FileUpload::createFileList() {
   fileListBlock = new QGroupBox(tr("Загруженные файлы"), this);
   fileListBlock->setMinimumWidth(430);
   fileListBlock->setObjectName("fileListBlock");
-  fileListBlock->setStyleSheet("#fileListBlock { margin: 10px 15px 0 15px }"
+  fileListBlock->setStyleSheet("#fileListBlock { margin: 20px 15px 0 15px; padding: 10px 0; }"
                                ""
-                               "#fileListBlock::title { margin-left: 0 }");
+                               "#fileListBlock::title { padding: -10px 15px 15px 10px }");
 
   QString dirName = getSetting("uploads/dir").toString();
   QDir dir(dirName);
@@ -95,7 +95,7 @@ void FileUpload::createFileList() {
     fileListBlock->hide(); // если нет файлов
   else {
     checkExtensions(); // проверка, если есть файлы
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
   }
 }
 
@@ -111,7 +111,7 @@ void FileUpload::addFile(QString file) {
 
   if (fileList.size()) {
     fileListBlock->show();
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
   }
 }
 
@@ -146,7 +146,7 @@ void FileUpload::removeFile() {
   if (!fileList.size())
     fileListBlock->hide();
   else
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
 }
 
 // Удаление файла по имени
@@ -168,7 +168,7 @@ void FileUpload::removeFile(QString fileName) {
     if (!fileList.size())
       fileListBlock->hide();
     else
-      fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+      fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
   }
 }
 
@@ -200,7 +200,7 @@ void FileUpload::refreshList() {
   // Настройка высоты блока
   if (fileList.size()) {
     fileListBlock->show();
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 10);
+    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
   }
 
   QMessageBox::information(this, "Обновление", "Список файлов успешно обновлен");

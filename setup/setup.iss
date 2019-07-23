@@ -49,7 +49,6 @@ Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\data\images\*"; 
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\data\images\icons\*"; DestDir: "{app}\data\images\icons"; Flags: ignoreversion
 
 ; Resources for web
-Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\*"; DestDir: "{app}\resources"; Flags: ignoreversion
 Source: "D:\ALEX\Documents\Programm\uni-correlation-coefficient\resources\js\*"; DestDir: "{app}\resources\js"; Flags: ignoreversion
 
 ; Extension for Chrome
