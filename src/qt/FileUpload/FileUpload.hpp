@@ -27,7 +27,8 @@ public:
   }
 
 protected:
-  void closeEvent(QCloseEvent *); // закрытие окна
+  void resizeEvent(QResizeEvent *); // изменение размера окна
+  void closeEvent(QCloseEvent *);   // закрытие окна
 
 private slots:
   void formSubmited();      // загрузка файлов с формы

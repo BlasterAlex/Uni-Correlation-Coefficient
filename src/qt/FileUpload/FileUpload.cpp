@@ -9,6 +9,7 @@
 #include <QImage>
 #include <QLabel>
 #include <QMessageBox>
+#include <QResizeEvent>
 #include <QSize>
 #include <QString>
 #include <QStringList>
@@ -41,20 +42,28 @@ FileUpload::FileUpload(QWidget *parent) : QMainWindow(parent) {
   createMenu();
   mainLayout->addWidget(menu, 0, Qt::AlignTop);
 
+  // Слой контента окна
+  QVBoxLayout *contentLayout = new QVBoxLayout(central);
+
+  contentLayout->setMargin(0);
+  contentLayout->setContentsMargins(15, 15, 15, 15);
+  contentLayout->setSpacing(15);
+
   // Создание поля загрузки файлов
   createDragAndDrop();
-  mainLayout->addWidget(dragAndDrop, 0, Qt::AlignTop | Qt::AlignHCenter);
+  contentLayout->addWidget(dragAndDrop, 0, Qt::AlignTop | Qt::AlignHCenter);
 
   // Создание списка загруженных файлов
   createFileList();
-  mainLayout->addWidget(fileListBlock, 1, Qt::AlignTop);
+  contentLayout->addWidget(fileListBlock, 1, Qt::AlignHCenter);
 
   // Кнопка
   HoverButton *button = new HoverButton("Отправить", this);
-  button->setStyleSheet("margin: 15px 0; width: 120px; height: 25px;");
-  mainLayout->addWidget(button, 0, Qt::AlignTop | Qt::AlignHCenter);
+  button->setStyleSheet("width: 120px; height: 15px;");
+  contentLayout->addWidget(button, 0, Qt::AlignTop | Qt::AlignHCenter);
   connect(button, &HoverButton::clicked, this, &FileUpload::submit);
 
+  mainLayout->addLayout(contentLayout);
   setCentralWidget(central);
 }
 
@@ -155,6 +164,12 @@ void FileUpload::submit() {
 
 // Обновление состояния диалогового окна загрузки
 void FileUpload::noDialog() { dialog = false; }
+
+// Событие изменения размера окна
+void FileUpload::resizeEvent(QResizeEvent *event) {
+  QMainWindow::resizeEvent(event);
+  fileListBlock->setMinimumWidth(event->size().width() - 30);
+}
 
 // Событие закрытия окна
 void FileUpload::closeEvent(QCloseEvent *event) {

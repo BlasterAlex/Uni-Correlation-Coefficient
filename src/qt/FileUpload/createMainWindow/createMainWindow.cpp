@@ -1,6 +1,6 @@
 #include <QDir>
 #include <QFile>
-#include <QFormLayout>
+#include <QHBoxLayout>
 #include <QMessageBox>
 #include <QString>
 #include <QToolBar>
@@ -22,15 +22,13 @@ void FileUpload::createMenu() {
   menu->setStyleSheet("QGroupBox {"
                       "  border: none;"
                       "  border-bottom: 2px solid rgba(178, 178, 178, 178);"
-                      "  margin: 0 0 10px 0;"
                       "  text-align: center;"
-                      "  min-width: 700px;"
                       "}");
 
-  QVBoxLayout *vbox = new QVBoxLayout(menu);
-  vbox->setMargin(0);
-  vbox->setContentsMargins(0, 0, 0, 0);
-  vbox->setSpacing(0);
+  QHBoxLayout *hbox = new QHBoxLayout(menu);
+  hbox->setMargin(0);
+  hbox->setContentsMargins(0, 0, 0, 0);
+  hbox->setSpacing(0);
 
   QToolBar *toolBar = new QToolBar(menu);
 
@@ -52,7 +50,8 @@ void FileUpload::createMenu() {
   connect(refMenu, &QToolButton::clicked, this, &FileUpload::refreshList);
 
   toolBar->setLayoutDirection(Qt::LeftToRight);
-  vbox->addWidget(toolBar);
+  hbox->addWidget(toolBar);
+  hbox->addStretch();
 }
 
 // Создание поля загрузки файлов
@@ -64,11 +63,6 @@ void FileUpload::createDragAndDrop() {
 // Вывод списка загруженных файлов
 void FileUpload::createFileList() {
   fileListBlock = new QGroupBox(tr("Загруженные файлы"), this);
-  fileListBlock->setMinimumWidth(430);
-  fileListBlock->setObjectName("fileListBlock");
-  fileListBlock->setStyleSheet("#fileListBlock { margin: 20px 15px 0 15px; padding: 10px 0; }"
-                               ""
-                               "#fileListBlock::title { padding: -10px 15px 15px 10px }");
 
   QString dirName = getSetting("uploads/dir").toString();
   QDir dir(dirName);
@@ -77,14 +71,19 @@ void FileUpload::createFileList() {
     qDebug() << "Создана папка " + dirName;
   }
 
-  QFormLayout *vbox = new QFormLayout(fileListBlock);
-  vbox->setContentsMargins(5, 5, 10, 5);
+  QVBoxLayout *vbox = new QVBoxLayout(fileListBlock);
+
+  vbox->setMargin(0);
+  vbox->setContentsMargins(10, 10, 10, 10);
+  vbox->setAlignment(Qt::AlignTop);
+  vbox->setSpacing(10);
+  vbox->setSizeConstraint(QLayout::SetNoConstraint);
 
   foreach (QString file, dir.entryList(QDir::Files)) {
     QFileInfo fileInfo(file);
     QString filename = fileInfo.fileName();
 
-    FileBlock *block = new FileBlock(filename, this);
+    FileBlock *block = new FileBlock(filename, fileListBlock);
 
     connect(block, SIGNAL(remove()), this, SLOT(removeFile()));
     fileList.push_back(block);
@@ -95,7 +94,7 @@ void FileUpload::createFileList() {
     fileListBlock->hide(); // если нет файлов
   else {
     checkExtensions(); // проверка, если есть файлы
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
+    fileListBlock->setMinimumHeight(fileList.size() * 60 + 20);
   }
 }
 
@@ -111,7 +110,7 @@ void FileUpload::addFile(QString file) {
 
   if (fileList.size()) {
     fileListBlock->show();
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
+    fileListBlock->setMinimumHeight(fileList.size() * 60 + 20);
   }
 }
 
@@ -146,7 +145,7 @@ void FileUpload::removeFile() {
   if (!fileList.size())
     fileListBlock->hide();
   else
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
+    fileListBlock->setMinimumHeight(fileList.size() * 60 + 20);
 }
 
 // Удаление файла по имени
@@ -168,7 +167,7 @@ void FileUpload::removeFile(QString fileName) {
     if (!fileList.size())
       fileListBlock->hide();
     else
-      fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
+      fileListBlock->setMinimumHeight(fileList.size() * 60 + 20);
   }
 }
 
@@ -197,11 +196,11 @@ void FileUpload::refreshList() {
     fileListBlock->layout()->addWidget(block);
   }
 
-  // Настройка высоты блока
-  if (fileList.size()) {
+  // Настройка видимости блока
+  if (fileList.size())
     fileListBlock->show();
-    fileListBlock->setFixedHeight(fileList.size() * 63 + 30);
-  }
+  else
+    fileListBlock->setMinimumHeight(fileList.size() * 60 + 20);
 
   QMessageBox::information(this, "Обновление", "Список файлов успешно обновлен");
   qDebug() << "Список обновлен";

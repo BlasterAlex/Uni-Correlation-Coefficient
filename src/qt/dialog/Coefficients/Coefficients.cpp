@@ -11,6 +11,7 @@
 #include <QMultiMap>
 #include <QObject>
 #include <QProgressBar>
+#include <QResizeEvent>
 #include <QString>
 #include <QTextStream>
 #include <QToolBar>
@@ -18,6 +19,8 @@
 #include <QVBoxLayout>
 #include <QVector>
 #include <QWidget>
+
+#include <QMessageBox>
 
 #include "../../Table/Table.hpp"
 #include "../../settings/settings.hpp"
@@ -128,6 +131,12 @@ void Coefficients::writeToCSV(QVector<Coeff> coeffs, QString name) {
 
     file.close();
   }
+}
+
+// Событие изменения размера окна
+void Coefficients::resizeEvent(QResizeEvent *event) {
+  QDialog::resizeEvent(event);
+  table->setFixedHeight(event->size().height() - 85);
 }
 
 // Событие закрытия окна

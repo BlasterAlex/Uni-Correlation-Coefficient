@@ -6,6 +6,7 @@
 #include <QGroupBox>
 #include <QLabel>
 #include <QProgressBar>
+#include <QResizeEvent>
 #include <QString>
 #include <QTableWidget>
 #include <QToolBar>
@@ -14,8 +15,8 @@
 #include <QWidget>
 
 #include "../../Table/Table.hpp"
-#include "../TableDialog/TableDialog.hpp"
 #include "../Chart/Chart.hpp"
+#include "../TableDialog/TableDialog.hpp"
 
 struct Coeff {
   QVector<int> parents; // номера таблиц, к которым относится коэффициент
@@ -37,7 +38,8 @@ public:
   virtual ~Coefficients() {}
 
 protected:
-  void closeEvent(QCloseEvent *); // закрытие окна
+  void resizeEvent(QResizeEvent *); // изменение размера окна
+  void closeEvent(QCloseEvent *);   // закрытие окна
 
 private slots:
   void action();               // нажатие кнопки меню
