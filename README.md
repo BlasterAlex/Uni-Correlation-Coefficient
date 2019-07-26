@@ -1,3 +1,3 @@
 # Uni Correlation Coefficient
 
-Task for educational practice
+Program for calculating the Correlation Coefficients of the tables of World University Rankings
