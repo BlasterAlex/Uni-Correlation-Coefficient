@@ -1,3 +1,19 @@
+/***
+ * Copyright 2019 Alexander Pishchulev (https://github.com/BlasterAlex)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <QCloseEvent>
 #include <QDebug>
 #include <QDir>
@@ -43,7 +59,7 @@ FileUpload::FileUpload(QWidget *parent) : QMainWindow(parent) {
   mainLayout->addWidget(menu, 0, Qt::AlignTop);
 
   // Слой контента окна
-  QVBoxLayout *contentLayout = new QVBoxLayout(central);
+  QVBoxLayout *contentLayout = new QVBoxLayout;
 
   contentLayout->setMargin(0);
   contentLayout->setContentsMargins(15, 15, 15, 15);
@@ -60,6 +76,7 @@ FileUpload::FileUpload(QWidget *parent) : QMainWindow(parent) {
   // Кнопка
   HoverButton *button = new HoverButton("Отправить", this);
   button->setStyleSheet("width: 120px; height: 15px;");
+  button->setFocusPolicy(Qt::NoFocus);
   contentLayout->addWidget(button, 0, Qt::AlignTop | Qt::AlignHCenter);
   connect(button, &HoverButton::clicked, this, &FileUpload::submit);
 
@@ -156,7 +173,7 @@ void FileUpload::submit() {
         coeff = new Coefficients(tables, this);
         coeff->show();
         dialog = true;
-        connect(coeff, SIGNAL(shutdown()), this, SLOT(noDialog()));
+        connect(coeff, &Coefficients::shutdown, this, &FileUpload::noDialog);
       }
     }
   }

@@ -2,7 +2,7 @@ TEMPLATE = app
 TARGET = uni-correlation-coefficient
 INCLUDEPATH += .
 
-CONFIG += c++11
+CONFIG += c++14
 DEFINES += QT_DEPRECATED_WARNINGS
 QT += core gui widgets charts webengine webenginewidgets
 
@@ -37,6 +37,8 @@ SOURCES += src/qt/main.cpp \
            \
            \ # Work with setting file
            src/qt/settings/settings.cpp \ 
+           src/qt/settings/settingsCheck/settingsCheck.cpp \
+           src/qt/settings/webResCheck/webResCheck.cpp \
            \
            \ # Various interface elements
            src/qt/blocks/ChartView/ChartView.cpp \

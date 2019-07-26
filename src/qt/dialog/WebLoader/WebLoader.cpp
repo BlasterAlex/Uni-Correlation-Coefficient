@@ -1,3 +1,19 @@
+/***
+ * Copyright 2019 Alexander Pishchulev (https://github.com/BlasterAlex)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <QDir>
 #include <QEventLoop>
 #include <QFile>
@@ -40,13 +56,13 @@ WebLoader::WebLoader(QWidget *parent) : QDialog(parent) {
 
   progress_bar = new QProgressBar(progress);
   progress_bar->setMinimum(1);
-  progress_bar->setMaximum(getWebRes("info/quantity").toInt() * 4); // количество таблиц * 4
+  progress_bar->setMaximum(int());
   vbox->addWidget(progress_bar);
 
   mainLayout->addWidget(progress);
 
   // Текстовые поля
-  QHBoxLayout *textLayout = new QHBoxLayout(this);
+  QHBoxLayout *textLayout = new QHBoxLayout;
   textLayout->setAlignment(Qt::AlignTop | Qt::AlignLeft);
 
   progress_indicator = new QLabel(progress);
@@ -64,6 +80,7 @@ WebLoader::WebLoader(QWidget *parent) : QDialog(parent) {
   // Кнопка выхода
   exitButton = new HoverButton("Выйти", this);
   exitButton->setStyleSheet("width: 120px; height: 15px;");
+  exitButton->setFocusPolicy(Qt::NoFocus);
   mainLayout->addWidget(exitButton, 0, Qt::AlignTop | Qt::AlignHCenter);
   exitButton->hide();
   connect(exitButton, &HoverButton::clicked, this, &WebLoader::leave);
@@ -80,6 +97,9 @@ void WebLoader::filesUpload() { // загрузка всех файлов
     ask = false;
   else
     ask = true;
+
+  // Установка количества таблиц
+  progress_bar->setMaximum(getWebRes("info/quantity").toInt() * 4); // количество таблиц * 4
 
   // Запуск таймера
   timer = new QTimer(this);

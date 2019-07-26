@@ -1,3 +1,20 @@
+
+/***
+ * Copyright 2019 Alexander Pishchulev (https://github.com/BlasterAlex)
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 #include <QAction>
 #include <QApplication>
 #include <QCloseEvent>
@@ -63,7 +80,7 @@ void Coefficients::setMenu() {
   act1->setFocusPolicy(Qt::NoFocus);
   act1->setShortcut(QKeySequence(Qt::ALT + Qt::Key_J));
   toolBar->addWidget(act1);
-  connect(act1, SIGNAL(clicked()), this, SLOT(action()));
+  connect(act1, &QToolButton::clicked, this, &Coefficients::action);
 
   QToolButton *act2 = new QToolButton(toolBar);
   act2->setText("&Кендалл");
@@ -71,7 +88,7 @@ void Coefficients::setMenu() {
   act2->setFocusPolicy(Qt::NoFocus);
   act2->setShortcut(QKeySequence(Qt::ALT + Qt::Key_R));
   toolBar->addWidget(act2);
-  connect(act2, SIGNAL(clicked()), this, SLOT(action()));
+  connect(act2, &QToolButton::clicked, this, &Coefficients::action);
 
   QToolButton *act3 = new QToolButton(toolBar);
   act3->setText("&Спирмен");
@@ -185,6 +202,7 @@ void Coefficients::createContentBlock() {
   // Размеры
   table->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
   table->verticalHeader()->setSectionResizeMode(QHeaderView::Stretch);
+  contentBlock->setMinimumHeight(tables.size() * 50 + 30);
 
   table->setRowCount(tablesNum);
   table->setColumnCount(tablesNum);
@@ -196,7 +214,7 @@ void Coefficients::createContentBlock() {
   table->setHorizontalHeaderLabels(headers);
   table->setVerticalHeaderLabels(headers);
 
-  vbox->addWidget(table);
+  vbox->addWidget(table, 1, Qt::AlignTop);
 
   connect(table->horizontalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(headerSelected(int)));
   connect(table->verticalHeader(), SIGNAL(sectionClicked(int)), this, SLOT(headerSelected(int)));
