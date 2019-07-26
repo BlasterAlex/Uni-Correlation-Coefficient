@@ -142,7 +142,7 @@ function getTable(param) {
 }
 
 // Получение второй части таблицы
-function getSecondPart(param) {
+function getNextPart(param) {
   // Канал для передачи данных в qt
   new QWebChannel(qt.webChannelTransport, function (channel) {
     var api = channel.objects.api;

@@ -26,19 +26,11 @@
 
 #include "../settings.hpp"
 
-// Для хранения частей таблиц
-struct PartOfTable {
-  QString name;
-  int number;
-
-  QString getFullName() { return name + QString::number(number); }
-};
-
 // Разбор названий с номерами
-PartOfTable nameParsing(QString item) {
+PartOfWebRes nameParsing(QString item) {
   int i;
   QString bufNum;
-  PartOfTable res;
+  PartOfWebRes res;
 
   // Выделение числа
   for (i = item.size() - 1; i >= 0; --i) {
@@ -128,7 +120,7 @@ bool webResFileIsValid() {
     QStringList resList = resources.toStringList();
 
     // Список частей таблиц, формируемый в процессе прохода по списку
-    QVector<QVector<PartOfTable>> parts;
+    QVector<QVector<PartOfWebRes>> parts;
 
     // Проход по всем ресурсам в списке
     foreach (QString res, resList) {
@@ -155,18 +147,18 @@ bool webResFileIsValid() {
       }
 
       // Отбор таблиц, разделенных на части
-      PartOfTable currentPart = nameParsing(res);
+      PartOfWebRes currentPart = nameParsing(res);
 
       if (currentPart.number != -1) { // это часть таблицы
 
         // Поиск названия в списке частей
         auto found =
-            std::find_if(parts.begin(), parts.end(), [&cn = currentPart.name](const QVector<PartOfTable> &part) { return part[0].name == cn; });
+            std::find_if(parts.begin(), parts.end(), [&cn = currentPart.name](const QVector<PartOfWebRes> &part) { return part[0].name == cn; });
 
         if (found != parts.end())
           found->push_back(currentPart); // добавить в существующий список частей
         else
-          parts.push_back(QVector<PartOfTable>({currentPart})); // часть новой таблицы
+          parts.push_back(QVector<PartOfWebRes>({currentPart})); // часть новой таблицы
 
       } else { // это обычная таблица
 
@@ -180,10 +172,10 @@ bool webResFileIsValid() {
     }
 
     // Проверка частей таблиц
-    foreach (QVector<PartOfTable> resParts, parts) {
+    foreach (QVector<PartOfWebRes> resParts, parts) {
 
       // Сортировка частей по значению number
-      std::sort(resParts.begin(), resParts.end(), [](const PartOfTable &a, const PartOfTable &b) { return a.number < b.number; });
+      std::sort(resParts.begin(), resParts.end(), [](const PartOfWebRes &a, const PartOfWebRes &b) { return a.number < b.number; });
 
       // Нумерация частей
       if (resParts[0].number != 1) { // нумерация начинается не с 1
@@ -208,7 +200,7 @@ bool webResFileIsValid() {
       }
 
       // Проверка всех полей
-      foreach (PartOfTable resPart, resParts) {
+      foreach (PartOfWebRes resPart, resParts) {
         QVector<QString> fields = {resPart.getFullName() + "/href", resPart.getFullName() + "/headline", resPart.getFullName() + "/rank",
                                    resPart.getFullName() + "/name"};
 

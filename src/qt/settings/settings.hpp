@@ -21,6 +21,17 @@
 #include <QVariant>
 #include <QVector>
 
+// Для хранения частей таблиц
+struct PartOfWebRes {
+  QString name;
+  int number;
+
+  QString getFullName() { return name + QString::number(number); }
+};
+
+// Разбор названий таблиц с номерами
+PartOfWebRes nameParsing(QString);
+
 // Запись значений
 void setSetting(QString, QVariant);
 void setSetting(QString, QVector<QVariant>);

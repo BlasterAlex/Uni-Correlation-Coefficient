@@ -23,27 +23,76 @@
 #include <QString>
 #include <QTcpSocket>
 #include <QTextStream>
+#include <QVector>
 #include <QWebChannel>
 #include <QWebEngineView>
+#include <algorithm>
 
 #include "../../../Table/Table.hpp"
 #include "../../../settings/settings.hpp"
 #include "../WebLoader.hpp"
 
+bool isFullTable(QString name) { // проверка на тип таблицы
+  if (nameParsing(name).number == -1)
+    return true;
+  else
+    return false;
+}
+
+bool isFirstPart(QString name) { // проверка на первую часть таблицы
+  if (isFullTable(name) || nameParsing(name).number == 1)
+    return true;
+  else
+    return false;
+}
+
+bool WebLoader::isLastPart(QString name) { // проверка на последнюю часть таблицы
+
+  // Получение типа таблицы
+  if (isFullTable(name))
+    return true;
+
+  // Разбор названия таблицы
+  PartOfWebRes res = nameParsing(name);
+
+  // Поиск следующей части таблицы
+  res.number++;
+  QString fullName = res.getFullName();
+
+  auto found = std::find_if(resources.begin(), resources.end(), [&np = fullName](const QString &resource) { return resource == np; });
+
+  if (found != resources.end()) // это не последняя часть таблицы
+    return false;
+
+  return true; // это последняя часть таблицы
+}
+
 void WebLoader::fileUpload() { // загрузка одного файла
+
   QString url = getWebRes(resources[0] + "/href").toString();
   setLabelText("Проверка url для " + resources[0]);
 
   if (!urlExists(url)) { // проверка доступности url
+
+    // Url не доступен
     setLabelText("Url для " + resources[0] + " не доступен!");
 
-    if (resources[0] != "ARWU1") // если это вся таблица
-      progress_bar->setValue(progress_bar->value() + 4);
-    else
-      progress_bar->setValue(progress_bar->value() + 8);
+    // Шага на одну таблицу
+    int stepsToTheNextTable = 4;
+
+    // Определение количества таблиц до следующей
+    while (isLastPart(resources[0]) != true) {
+      resources.remove(0);
+      stepsToTheNextTable += 4;
+    }
+
+    // Установка нового значения лодера
+    progress_bar->setValue(progress_bar->value() + stepsToTheNextTable);
 
     emit tableDone();
   } else {
+
+    // Url доступен
     setLabelText("Url для " + resources[0] + " доступен");
     progress_bar->setValue(progress_bar->value() + 1);
 
@@ -75,10 +124,11 @@ void WebLoader::readPage() { // чтение очередной страницы
 
   QString url = getWebRes(resources[0] + "/href").toString();
 
-  // Очистка хранимых данных
-  if (resources[0] != "ARWU2")
+  // Очистка хранимых данных, если это целая таблица или первая часть таблицы
+  if (isFirstPart(resources[0]))
     someTable.clear();
 
+  // Удаление веб-страницы, если она открыта
   if (webV)
     delete webView;
   else
@@ -124,13 +174,13 @@ void WebLoader::loadFinished(bool) { // запуск скриптов после
   fileJS.close();
   webView->page()->runJavaScript(js);
 
-  if (resources[0] != "ARWU2") // если это вся таблица
+  if (isFirstPart(resources[0])) // если это вся таблица или первая часть
     // Вызов функции из js
     webView->page()->runJavaScript("getTable('" + getWebRes(resources[0] + "/headline").toString() + ", " +
                                    getWebRes(resources[0] + "/rank").toString() + ", " + getWebRes(resources[0] + "/name").toString() + "')");
-  else // если это вторая часть таблицы
+  else // если это другая часть таблицы
     // Вызов функции из js
-    webView->page()->runJavaScript("getSecondPart('" + getWebRes(resources[0] + "/headline").toString() + ", " +
+    webView->page()->runJavaScript("getNextPart('" + getWebRes(resources[0] + "/headline").toString() + ", " +
                                    getWebRes(resources[0] + "/rank").toString() + ", " + getWebRes(resources[0] + "/name").toString() + "')");
 }
 
@@ -147,7 +197,7 @@ void WebLoader::endOfTable() { // чтение таблицы завершено
   setLabelText("Таблица " + resources[0] + " получена");
   progress_bar->setValue(progress_bar->value() + 1);
 
-  if (someTable.size() == 0 || someTable.size() == 1) {
+  if (someTable.size() == 0 || someTable.size() == 1) { // пришла пустая таблица рейтингов
     timer->stop();
     QMessageBox::critical(this, "Ошибка загрузки", "Загруженная таблица " + resources[0] + " пустая. Пропускается");
 
@@ -157,20 +207,15 @@ void WebLoader::endOfTable() { // чтение таблицы завершено
     timer->start();
     emit tableDone();
   } else {
-    if (resources[0] != "ARWU1") { // если это вся таблица
-      // Запись полученной таблицы в файл
-      QString filename;
-      if (resources[0] != "ARWU2")
-        filename = resources[0] + ".csv";
-      else
-        filename = resources[0].left(resources[0].length() - 1) + ".csv";
+    if (isLastPart(resources[0])) { // если это вся таблица
 
+      // Запись полученной таблицы в файл
+      QString filename = nameParsing(resources[0]).name + ".csv";
       Table table(someTable, filename);
       progress_bar->setValue(progress_bar->value() + 1);
 
       QString target = getSetting("uploads/dir").toString() + QDir::separator();
       if (QFile::exists(target)) {
-
         if (QFile::exists(target + filename)) { // такой файл уже есть
           if (ask) {
             timer->stop();
@@ -191,6 +236,7 @@ void WebLoader::endOfTable() { // чтение таблицы завершено
           } else
             emit fileDelRequest(filename); // удаление файла
         }
+
         progress_bar->setValue(progress_bar->value() + 1);
         if (table.createNewFile()) {
           setLabelText("Файл " + filename + " успешно сохранен");
@@ -201,11 +247,10 @@ void WebLoader::endOfTable() { // чтение таблицы завершено
 
         emit tableDone();
       }
-    } else { // таблица разбита на две части
-      progress_bar->setValue(progress_bar->value() + 1);
-      resources[0] = "ARWU2"; // имя второй таблицы
-      progress_bar->setValue(progress_bar->value() + 1);
-      fileUpload();
+    } else { // таблица разбита на части
+      setLabelText("Переход к следующей части таблицы");
+      progress_bar->setValue(progress_bar->value() + 2);
+      emit tableDone();
     }
   }
 }

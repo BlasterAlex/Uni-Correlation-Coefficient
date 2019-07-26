@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <QCollator>
 #include <QDir>
 #include <QEventLoop>
 #include <QFile>
@@ -32,6 +33,7 @@
 #include <QWebChannel>
 #include <QWebEngineView>
 #include <QWidget>
+#include <algorithm>
 
 #include "../../Table/Table.hpp"
 #include "../../blocks/HoverButton/HoverButton.hpp"
@@ -98,8 +100,22 @@ void WebLoader::filesUpload() { // загрузка всех файлов
   else
     ask = true;
 
-  // Установка количества таблиц
-  progress_bar->setMaximum(getWebRes("info/quantity").toInt() * 4); // количество таблиц * 4
+  // Чтение заголовков ресурсов
+  QVariant resHeaders = getWebRes("info/resources");
+  if (strcmp(resHeaders.typeName(), "QString") == 0)
+    resources.push_back(resHeaders.toString());
+  else if (strcmp(resHeaders.typeName(), "QStringList") == 0) {
+    // Массив заголовков
+    resources = resHeaders.toStringList().toVector();
+
+    // Сортировка по имени и номерам
+    QCollator collator;
+    collator.setNumericMode(true);
+    std::sort(resources.begin(), resources.end(), [&collator](const QString &a, const QString &b) { return collator.compare(a, b) < 0; });
+  }
+
+  // Подсчет количества шагов
+  progress_bar->setMaximum(resources.size() * 4); // количество таблиц * 4
 
   // Запуск таймера
   timer = new QTimer(this);

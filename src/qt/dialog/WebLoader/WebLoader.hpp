@@ -55,7 +55,7 @@ private:
   QWebEngineView *webView;
 
   // Названия ресурсов для загрузки
-  QVector<QString> resources = {"ARWU1", "CWUR", "RUR", "THE"};
+  QVector<QString> resources;
 
   // Хранимая таблица рейтингов
   QList<QList<QVariant>> someTable;
@@ -71,6 +71,7 @@ private:
 
   void filesUpload();       // загрузка всех файлов
   void fileUpload();        // загрузка одного файла
+  bool isLastPart(QString); // проверка на последнюю часть таблицы рейтингов
   bool urlExists(QString);  // проверка url на доступность
   void readPage();          // чтение очередной страницы
   bool completenessCheck(); // разрешение на закрытие окна

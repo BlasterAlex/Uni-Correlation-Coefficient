@@ -51,11 +51,6 @@ QVariant getSetting(QString name) {
   return settings.value(name);
 }
 
-QVariant getWebRes(QString name) {
-  QSettings settings("config/web-resources.ini", QSettings::IniFormat);
-  return settings.value(name);
-}
-
 QVector<QVariant> getVectorSettings(QString name) {
   QSettings settings("config/settings.ini", QSettings::IniFormat);
   QVector<QVariant> array;
@@ -68,4 +63,9 @@ QVector<QVariant> getVectorSettings(QString name) {
   settings.endArray();
 
   return array;
+}
+
+QVariant getWebRes(QString name) {
+  QSettings settings("config/web-resources.ini", QSettings::IniFormat);
+  return settings.value(name);
 }
