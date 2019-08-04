@@ -27,10 +27,10 @@
 #include "../settings.hpp"
 
 // Разбор названий с номерами
-PartOfWebRes nameParsing(QString item) {
+WebRes nameParsing(QString item) {
   int i;
   QString bufNum;
-  PartOfWebRes res;
+  WebRes res;
 
   // Выделение числа
   for (i = item.size() - 1; i >= 0; --i) {
@@ -120,7 +120,7 @@ bool webResFileIsValid() {
     QStringList resList = resources.toStringList();
 
     // Список частей таблиц, формируемый в процессе прохода по списку
-    QVector<QVector<PartOfWebRes>> parts;
+    QVector<QVector<WebRes>> parts;
 
     // Проход по всем ресурсам в списке
     foreach (QString res, resList) {
@@ -147,18 +147,18 @@ bool webResFileIsValid() {
       }
 
       // Отбор таблиц, разделенных на части
-      PartOfWebRes currentPart = nameParsing(res);
+      WebRes currentPart = nameParsing(res);
 
       if (currentPart.number != -1) { // это часть таблицы
 
         // Поиск названия в списке частей
         auto found =
-            std::find_if(parts.begin(), parts.end(), [&cn = currentPart.name](const QVector<PartOfWebRes> &part) { return part[0].name == cn; });
+            std::find_if(parts.begin(), parts.end(), [&cn = currentPart.name](const QVector<WebRes> &part) { return part[0].name == cn; });
 
         if (found != parts.end())
           found->push_back(currentPart); // добавить в существующий список частей
         else
-          parts.push_back(QVector<PartOfWebRes>({currentPart})); // часть новой таблицы
+          parts.push_back(QVector<WebRes>({currentPart})); // часть новой таблицы
 
       } else { // это обычная таблица
 
@@ -172,10 +172,10 @@ bool webResFileIsValid() {
     }
 
     // Проверка частей таблиц
-    foreach (QVector<PartOfWebRes> resParts, parts) {
+    foreach (QVector<WebRes> resParts, parts) {
 
       // Сортировка частей по значению number
-      std::sort(resParts.begin(), resParts.end(), [](const PartOfWebRes &a, const PartOfWebRes &b) { return a.number < b.number; });
+      std::sort(resParts.begin(), resParts.end(), [](const WebRes &a, const WebRes &b) { return a.number < b.number; });
 
       // Нумерация частей
       if (resParts[0].number != 1) { // нумерация начинается не с 1
@@ -200,7 +200,7 @@ bool webResFileIsValid() {
       }
 
       // Проверка всех полей
-      foreach (PartOfWebRes resPart, resParts) {
+      foreach (WebRes resPart, resParts) {
         QVector<QString> fields = {resPart.getFullName() + "/href", resPart.getFullName() + "/headline", resPart.getFullName() + "/rank",
                                    resPart.getFullName() + "/name"};
 

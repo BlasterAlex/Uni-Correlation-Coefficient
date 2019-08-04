@@ -76,16 +76,16 @@ private:
   void readPage();          // чтение очередной страницы
   bool completenessCheck(); // разрешение на закрытие окна
 
+public slots:
+  void addTableRow(QList<QVariant>); // получение строки таблицы
+  void endOfTable();                 // чтение таблицы завершено
+  void setLabelText(QString);        // вывод сообщения
+
 private slots:
   void loadFinished(bool); // загрузка страницы завершена
   void goToNextTable();    // переход к следующей таблице
   void updateIndicator();  // обновление индикатора
   void leave();            // закрытие окна по нажатию
-
-public slots:
-  void addTableRow(QList<QVariant>); // получение строки таблицы
-  void endOfTable();                 // чтение таблицы завершено
-  void setLabelText(QString);        // вывод сообщения
 
 signals:
   void tableDone();             // окончание загрузки таблицы

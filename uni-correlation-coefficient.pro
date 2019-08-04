@@ -12,55 +12,55 @@ RC_FILE     = data/images/icons/icon.rc
 
 # Input
 HEADERS += \ # Work with setting file
-           src/qt/settings/settings.hpp \ 
+           src/settings/settings.hpp \ 
            \
            \ # Various interface elements
-           src/qt/blocks/ChartView/ChartView.hpp \
-           src/qt/blocks/FileBlock/FileBlock.hpp \
-           src/qt/blocks/HoverButton/HoverButton.hpp \
-           src/qt/blocks/UploadForm/UploadForm.hpp \
+           src/blocks/ChartView/ChartView.hpp \
+           src/blocks/FileBlock/FileBlock.hpp \
+           src/blocks/HoverButton/HoverButton.hpp \
+           src/blocks/UploadForm/UploadForm.hpp \
            \
            \ # Dialog windows
-           src/qt/dialog/Chart/Chart.hpp \
-           src/qt/dialog/Coefficients/Coefficients.hpp \
-           src/qt/dialog/TableDialog/TableDialog.hpp \
-           src/qt/dialog/TableDialog/FloatItem/FloatItem.hpp \
-           src/qt/dialog/WebLoader/WebLoader.hpp \ 
+           src/dialog/Chart/Chart.hpp \
+           src/dialog/Coefficients/Coefficients.hpp \
+           src/dialog/TableDialog/TableDialog.hpp \
+           src/dialog/TableDialog/FloatItem/FloatItem.hpp \
+           src/dialog/WebLoader/WebLoader.hpp \ 
            \
            \ # Work with user files
-           src/qt/FileUpload/FileUpload.hpp \
+           src/FileUpload/FileUpload.hpp \
            \
            \ # Class for working with tables
-           src/qt/Table/Table.hpp
+           src/Table/Table.hpp
 
-SOURCES += src/qt/main.cpp \
+SOURCES += src/main.cpp \
            \
            \ # Work with setting file
-           src/qt/settings/settings.cpp \ 
-           src/qt/settings/settingsCheck/settingsCheck.cpp \
-           src/qt/settings/webResCheck/webResCheck.cpp \
+           src/settings/settings.cpp \ 
+           src/settings/settingsCheck/settingsCheck.cpp \
+           src/settings/webResCheck/webResCheck.cpp \
            \
            \ # Various interface elements
-           src/qt/blocks/ChartView/ChartView.cpp \
-           src/qt/blocks/FileBlock/FileBlock.cpp \
-           src/qt/blocks/HoverButton/HoverButton.cpp \
-           src/qt/blocks/UploadForm/UploadForm.cpp \
+           src/blocks/ChartView/ChartView.cpp \
+           src/blocks/FileBlock/FileBlock.cpp \
+           src/blocks/HoverButton/HoverButton.cpp \
+           src/blocks/UploadForm/UploadForm.cpp \
            \
            \ # Dialog windows
-           src/qt/dialog/Chart/Chart.cpp \
-           src/qt/dialog/Coefficients/Coefficients.cpp \
-           src/qt/dialog/Coefficients/createWindow/createWindow.cpp \
-           src/qt/dialog/Coefficients/Exchange/Exchange.cpp \
-           src/qt/dialog/Coefficients/Kendall/Kendall.cpp \
-           src/qt/dialog/Coefficients/Spearman/Spearman.cpp \
-           src/qt/dialog/TableDialog/TableDialog.cpp \
-           src/qt/dialog/WebLoader/WebLoader.cpp \
-           src/qt/dialog/WebLoader/fileUploading/fileUploading.cpp \
+           src/dialog/Chart/Chart.cpp \
+           src/dialog/Coefficients/Coefficients.cpp \
+           src/dialog/Coefficients/createWindow/createWindow.cpp \
+           src/dialog/Coefficients/Exchange/Exchange.cpp \
+           src/dialog/Coefficients/Kendall/Kendall.cpp \
+           src/dialog/Coefficients/Spearman/Spearman.cpp \
+           src/dialog/TableDialog/TableDialog.cpp \
+           src/dialog/WebLoader/WebLoader.cpp \
+           src/dialog/WebLoader/fileUploading/fileUploading.cpp \
            \
            \ # Work with user files
-           src/qt/FileUpload/FileUpload.cpp \
-           src/qt/FileUpload/createMainWindow/createMainWindow.cpp \
-           src/qt/FileUpload/fileParsing/fileParsing.cpp \
+           src/FileUpload/FileUpload.cpp \
+           src/FileUpload/createMainWindow/createMainWindow.cpp \
+           src/FileUpload/fileParsing/fileParsing.cpp \
            \
            \ # Class for working with tables
-           src/qt/Table/Table.cpp
+           src/Table/Table.cpp

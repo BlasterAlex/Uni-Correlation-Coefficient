@@ -53,7 +53,7 @@ bool WebLoader::isLastPart(QString name) { // проверка на послед
     return true;
 
   // Разбор названия таблицы
-  PartOfWebRes res = nameParsing(name);
+  WebRes res = nameParsing(name);
 
   // Поиск следующей части таблицы
   res.number++;

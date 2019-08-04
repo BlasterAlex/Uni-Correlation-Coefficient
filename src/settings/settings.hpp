@@ -22,7 +22,7 @@
 #include <QVector>
 
 // Для хранения частей таблиц
-struct PartOfWebRes {
+struct WebRes {
   QString name;
   int number;
 
@@ -30,7 +30,7 @@ struct PartOfWebRes {
 };
 
 // Разбор названий таблиц с номерами
-PartOfWebRes nameParsing(QString);
+WebRes nameParsing(QString);
 
 // Запись значений
 void setSetting(QString, QVariant);
