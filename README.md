@@ -1,6 +1,6 @@
 # Uni Correlation Coefficient
 
-![GitHub release (latest by date)](https://img.shields.io/github/v/release/BlasterAlex/Uni-Correlation-Coefficient) ![GitHub](https://img.shields.io/github/license/BlasterAlex/Uni-Correlation-Coefficient)
+![GitHub release (latest by date)](https://img.shields.io/github/v/release/BlasterAlex/Uni-Correlation-Coefficient) ![GitHub](https://img.shields.io/github/license/BlasterAlex/Uni-Correlation-Coefficient) ![Travis (.org)](https://img.shields.io/travis/BlasterAlex/Uni-Correlation-Coefficient)
 
 Программа с пользовательским интерфейсом для сравнения таблиц мировых рейтингов университетов с помощью вычисления [коэффициентов корреляции](https://ru.wikipedia.org/wiki/%D0%9A%D0%BE%D1%80%D1%80%D0%B5%D0%BB%D1%8F%D1%86%D0%B8%D1%8F) для каждой пары таблиц. 
 
