@@ -7,6 +7,10 @@ before_install:
   - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
   - sudo apt-add-repository -y ppa:beineri/opt-qt562-trusty
 
+  # qetting Qt Charts
+  - wget http://download.qt.io/archive/qt/5.7/5.7.0/submodules/qtcharts-opensource-src-5.7.0.tar.gz
+  - tar -zxvf qtcharts-opensource-src-5.7.0.tar.gz
+
 install:
   # Qt
   - sudo apt-get -qq update
@@ -15,7 +19,9 @@ install:
   - export CC="gcc-4.8"
 
   # Qt Charts
-  - sudo apt-get --yes install libqt5charts5 libqt5charts5-dev
+  - cd qtcharts-opensource-src-5.7.0 
+  - qmake
+  - make install
 
   # Qt WebEngine
   - sudo apt-get --yes install qtwebengine5-dev
