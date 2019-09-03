@@ -14,7 +14,7 @@ before_install:
   # getting Qt WebEngine
   - git clone git://code.qt.io/qt/qtwebengine.git
   - sudo apt-get --yes install bison build-essential gperf flex ruby python libasound2-dev libbz2-dev libcap-dev \
-    libdrm-dev libegl1-mesa-dev libgcrypt11-dev libnss3-dev libpci-dev libpulse-dev libudev-dev gyp ninja-build
+    libegl1-mesa-dev libgcrypt11-dev libnss3-dev libpci-dev libpulse-dev libudev-dev gyp ninja-build
 
 install:
   # Qt
