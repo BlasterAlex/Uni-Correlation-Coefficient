@@ -29,6 +29,7 @@ install:
 
   # Qt WebEngine
   - cd ../qtwebengine
+  - git submodule update --init
   - qmake -r
   - make
   - sudo make install
