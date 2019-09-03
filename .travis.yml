@@ -1,45 +1,50 @@
 language: cpp
 os: linux
-dist: trusty
+dist: bionic
 
 before_install:
   # getting Qt
-  - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
-  - sudo apt-add-repository -y ppa:beineri/opt-qt562-trusty
+  wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
+  # - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
+  # - sudo apt-add-repository -y ppa:beineri/opt-qt562-trusty
 
   # qetting Qt Charts
-  - wget http://download.qt.io/archive/qt/5.7/5.7.0/submodules/qtcharts-opensource-src-5.7.0.tar.gz
-  - tar -zxvf qtcharts-opensource-src-5.7.0.tar.gz
+  # - wget http://download.qt.io/archive/qt/5.7/5.7.0/submodules/qtcharts-opensource-src-5.7.0.tar.gz
+  # - tar -zxvf qtcharts-opensource-src-5.7.0.tar.gz
 
-  # getting Qt WebEngine
-  - git clone git://code.qt.io/qt/qtwebengine.git
-  - sudo apt-get --yes install bison build-essential gperf flex ruby python libasound2-dev libbz2-dev libcap-dev
+  # # getting Qt WebEngine
+  # - sudo apt-add-repository -y ppa:ethereum/ethereum-qt
+  # git clone git://code.qt.io/qt/qtwebengine.git
+  # sudo apt-get --yes install bison build-essential gperf flex ruby python libasound2-dev libbz2-dev libcap-dev
 
 install:
   # Qt
-  - sudo apt-get -qq update
-  - sudo apt-get -qq install g++-4.8 libc6-i386 qt56tools qt56svg qt56script
-  - export CXX="g++-4.8"
-  - export CC="gcc-4.8"
+  # - sudo apt-get -qq update
+  # - sudo apt-get -qq install g++-4.8 libc6-i386 qt56tools qt56svg qt56script
+  # - export CXX="g++-4.8"
+  # - export CC="gcc-4.8"
+  chmod +x qt-opensource-linux-x64-5.7.0.run
+  ./qt-opensource-linux-x64-5.7.0.run
+  sudo apt-get install build-essential
 
   # Qt Charts
-  - cd qtcharts-opensource-src-5.7.0 
-  - qmake
-  - make install
+  # - cd qtcharts-opensource-src-5.7.0 
+  # - qmake
+  # - make install
 
-  # Qt WebEngine
-  - cd ../qtwebengine
-  - git submodule update --init
-  - qmake -r
-  - make
-  - sudo make install
+  # # Qt WebEngine
+  # - cd ../qtwebengine
+  # - git submodule update --init
+  # - qmake -r
+  # - make
+  # - sudo make install
 
 before_script:
   # Qt variables
-  - QTDIR="/opt/qt56"
-  - PATH="$QTDIR/bin:$PATH"
-  - qt56-env.sh
-  - cd ..
+  # - QTDIR="/opt/qt56"
+  # - PATH="$QTDIR/bin:$PATH"
+  # - qt56-env.sh
+  # - cd ..
 
 script:
   # Compilation
