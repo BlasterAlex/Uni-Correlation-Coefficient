@@ -11,6 +11,12 @@ before_install:
   - wget http://download.qt.io/archive/qt/5.7/5.7.0/submodules/qtcharts-opensource-src-5.7.0.tar.gz
   - tar -zxvf qtcharts-opensource-src-5.7.0.tar.gz
 
+  # getting Qt WebEngine
+  - git clone git://code.qt.io/qt/qtwebengine.git
+  - sudo apt-get --yes install bison build-essential gperf flex ruby python libasound2-dev libbz2-dev libcap-dev \
+    libcups2-dev libdrm-dev libegl1-mesa-dev libgcrypt11-dev libnss3-dev libpci-dev libpulse-dev libudev-dev \
+    libxtst-dev gyp ninja-build
+
 install:
   # Qt
   - sudo apt-get -qq update
@@ -24,13 +30,17 @@ install:
   - make install
 
   # Qt WebEngine
-  - sudo apt-get --yes install qtwebengine5-dev
+  - cd ../qtwebengine
+  - qmake -r
+  - make
+  - sudo make install
 
 before_script:
   # Qt variables
   - QTDIR="/opt/qt56"
   - PATH="$QTDIR/bin:$PATH"
   - qt56-env.sh
+  - cd ..
 
 script:
   # Compilation
