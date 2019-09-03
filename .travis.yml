@@ -6,8 +6,8 @@ before_install:
 
   # update repos
   # - sudo apt-add-repository -y ppa:ubuntu/bionic
-  - sudo apt-get update
-  - sudo apt-get upgrade
+  # - sudo apt-get update
+  # - sudo apt-get upgrade
   # getting Qt
   # wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
   # chmod +x qt-opensource-linux-x64-5.7.0.run
@@ -28,10 +28,11 @@ install:
   # - sudo apt-get -qq install g++-4.8 libc6-i386 qt56tools qt56svg qt56script
   # - export CXX="g++-4.8"
   # - export CC="gcc-4.8"
-  - sudo apt install build-essential
-  - sudo apt install qt5-default
+  - sudo apt-get --yes install build-essential
+  - sudo apt-get --yes install qt5-default
 
   # Qt Charts
+  - sudo apt-get --yes install libqt5charts5 libqt5charts5-dev
   # - cd qtcharts-opensource-src-5.7.0 
   # - qmake
   # - make install
