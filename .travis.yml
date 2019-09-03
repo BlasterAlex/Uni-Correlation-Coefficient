@@ -1,0 +1,38 @@
+language: cpp
+os: linux
+dist: trusty
+
+before_install:
+  # getting Qt
+  - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
+  - sudo apt-add-repository -y ppa:beineri/opt-qt562-trusty
+
+install:
+  # Qt
+  - sudo apt-get -qq update
+  - sudo apt-get -qq install g++-4.8 libc6-i386 qt56tools qt56svg qt56script
+  - export CXX="g++-4.8"
+  - export CC="gcc-4.8"
+
+  # Qt Charts
+  - sudo apt-get --yes install libqt5charts5 libqt5charts5-dev
+
+  # Qt WebEngine
+  - sudo apt-get --yes install qtwebengine5-dev
+
+before_script:
+  # Qt variables
+  - QTDIR="/opt/qt56"
+  - PATH="$QTDIR/bin:$PATH"
+  - qt56-env.sh
+
+script:
+  # Compilation
+  - qmake && make -s -j`nproc`
+
+notifications:
+  recipients:
+    - blasteralex@yandex.ru
+  email:
+    on_success: change
+    on_failure: change
