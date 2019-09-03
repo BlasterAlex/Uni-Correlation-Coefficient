@@ -4,7 +4,8 @@ dist: bionic
 
 before_install:
   # getting Qt
-  wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
+  # wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
+  # chmod +x qt-opensource-linux-x64-5.7.0.run
   # - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
   # - sudo apt-add-repository -y ppa:beineri/opt-qt562-trusty
 
@@ -23,9 +24,8 @@ install:
   # - sudo apt-get -qq install g++-4.8 libc6-i386 qt56tools qt56svg qt56script
   # - export CXX="g++-4.8"
   # - export CC="gcc-4.8"
-  chmod +x qt-opensource-linux-x64-5.7.0.run
-  ./qt-opensource-linux-x64-5.7.0.run
-  sudo apt-get install build-essential
+  sudo apt install build-essential
+  sudo apt install qt5-default
 
   # Qt Charts
   # - cd qtcharts-opensource-src-5.7.0 
