@@ -3,10 +3,14 @@ os: linux
 dist: bionic
 
 before_install:
+
+  # update repos
+  # - sudo apt-add-repository -y ppa:ubuntu/bionic
+  - sudo apt-get update
+  - sudo apt-get upgrade
   # getting Qt
   # wget http://download.qt.io/official_releases/qt/5.7/5.7.0/qt-opensource-linux-x64-5.7.0.run
   # chmod +x qt-opensource-linux-x64-5.7.0.run
-  # - sudo apt-add-repository -y ppa:ubuntu-toolchain-r/test
   # - sudo apt-add-repository -y ppa:beineri/opt-qt562-trusty
 
   # qetting Qt Charts
